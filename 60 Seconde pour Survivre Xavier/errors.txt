@@ -2,9 +2,9 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 26: u'time' is not a keyword argument or valid child for the label statement.
-    label value time range timer_range xalign 0.5 yalign 0.9 xmaximum 300 at alpha_dissolve
-                    ^
+File "game/script.rpy", line 43: u'str' is not a keyword argument or valid child for the text statement.
+    text "FOOD: " str(nb_food)
+                     ^
 
 Ren'Py Version: Ren'Py 7.4.11.2266
-Sat May 21 11:07:38 2022
+Sat May 21 12:36:49 2022

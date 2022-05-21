@@ -1,34 +1,52 @@
 ﻿I'm sorry, but an uncaught exception occurred.
 
-While running game code:
-  File "game/script.rpy", line 27, in script
-    $ is_down = false
-  File "game/script.rpy", line 27, in script
-    $ is_down = false
-  File "game/script.rpy", line 27, in <module>
-    $ is_down = false
-NameError: name 'false' is not defined
+After initialization, but before game start.
+  File "game/script.rpy", line 53, in prepare_screen
+    screen soup:
+  File "game/script.rpy", line 53, in prepare
+    screen soup:
+  File "game/script.rpy", line 54, in prepare
+    if soup_1 == 0:
+  File "game/script.rpy", line 54, in prepare
+    if soup_1 == 0:
+  File "game/script.rpy", line 55, in prepare
+    imagebutton:
+  File "game/script.rpy", line 55, in prepare
+    imagebutton:
+SyntaxError: invalid syntax (script.rpy, line 60)
 
 -- Full Traceback ------------------------------------------------------------
 
 Full traceback:
   File "/home/exiel/renpy-7.4.11-sdk/renpy/bootstrap.py", line 331, in bootstrap
     renpy.main.main()
-  File "/home/exiel/renpy-7.4.11-sdk/renpy/main.py", line 560, in main
-    renpy.game.context().run(node)
-  File "game/script.rpy", line 27, in script
-    $ is_down = false
-  File "game/script.rpy", line 27, in script
-    $ is_down = false
-  File "/home/exiel/renpy-7.4.11-sdk/renpy/ast.py", line 928, in execute
-    renpy.python.py_exec_bytecode(self.code.bytecode, self.hide, store=self.store)
-  File "/home/exiel/renpy-7.4.11-sdk/renpy/python.py", line 2245, in py_exec_bytecode
-    exec(bytecode, globals, locals)
-  File "game/script.rpy", line 27, in <module>
-    $ is_down = false
-NameError: name 'false' is not defined
+  File "/home/exiel/renpy-7.4.11-sdk/renpy/main.py", line 662, in main
+    run(restart)
+  File "/home/exiel/renpy-7.4.11-sdk/renpy/main.py", line 97, in run
+    renpy.display.screen.prepare_screens()
+  File "/home/exiel/renpy-7.4.11-sdk/renpy/display/screen.py", line 955, in prepare_screens
+    s.ast.prepare_screen()
+  File "game/script.rpy", line 53, in prepare_screen
+    screen soup:
+  File "game/script.rpy", line 53, in prepare
+    screen soup:
+  File "game/script.rpy", line 54, in prepare
+    if soup_1 == 0:
+  File "game/script.rpy", line 54, in prepare
+    if soup_1 == 0:
+  File "game/script.rpy", line 55, in prepare
+    imagebutton:
+  File "game/script.rpy", line 55, in prepare
+    imagebutton:
+  File "/home/exiel/renpy-7.4.11-sdk/renpy/pyanalysis.py", line 714, in ast_eval
+    return self.ast_eval_literal(expr)[0]
+  File "/home/exiel/renpy-7.4.11-sdk/renpy/pyanalysis.py", line 696, in ast_eval_literal
+    expr = py_compile(expr, 'eval', ast_node=True)
+  File "/home/exiel/renpy-7.4.11-sdk/renpy/python.py", line 835, in py_compile
+    raise e
+SyntaxError: invalid syntax (script.rpy, line 60)
 
 Linux-5.17.6-1-MANJARO-x86_64-with-glibc2.2.5
 Ren'Py 7.4.11.2266
 60 Seconde pour Survivre Xavier 1.0
-Sat May 21 11:54:41 2022
+Sat May 21 12:44:33 2022

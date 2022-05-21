@@ -14,7 +14,11 @@ screen countdown:
     timer 0.01 repeat True action If(time > 0, true=SetVariable('time', time - 0.01), false=[Hide('countdown'), Jump(timer_jump)])
 
     side "tl":
-        text str(time)
+        frame xpos 20 ypos 20:
+            text str(time)
+
+transform custom_zoom:
+    zoom 0.2
 
 init:
     $ time = 60
@@ -29,9 +33,31 @@ init:
     $ max_food = 10
     $ max_drink = 10
 
+    $ soup_1 = 0
+
 label xavier_caught_you:
     "Malheureusement, vous avez été trop lent... Xavier vous a attrapé avant que vous n'atténiez le bunker."
     return
+
+screen infos:
+    frame xpos 1750 ypos 20:
+        text "FOOD: " + str(nb_food)
+
+label add_soup:
+    if nb_food < max_food:
+        $ nb_food += 1
+        "Vous avez trouvé une soupe !"
+    else:
+        "Vous avez trop de nourriture sur vous !"
+
+screen soup:
+    if soup_1 == 0:
+        imagebutton:
+            xpos 190
+            ypos 450
+            idle "soup.png"
+            at custom_zoom
+            action [SetVariable("soup_1", soup_1 + 1), Jump("add_soup")]
 
 # The game starts here.
 
@@ -41,20 +67,23 @@ label start:
     # add a file (named either "bg room.png" or "bg room.jpg") to the
     # images directory to show it.
 
-    scene bg room
+    scene black
+
+    "Ce jeu est basé sur des fait réels..."
+
+    scene bg house
 
     # This shows a character sprite. A placeholder is used, but you can
     # replace it by adding a file named "eileen happy.png" to the images
     # directory.
 
-    show eileen happy
-
     show screen countdown
+    show screen infos
+    show screen soup
 
     # These display lines of dialogue.
 
-    "Ce jeu est basé sur des fait réels..."
-
+    pause
 
     # This ends the game.
 
