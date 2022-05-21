@@ -2,13 +2,9 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 31: expected statement.
-    textbutton _("English") action Language(None)
-                ^
-
-File "game/script.rpy", line 32: expected statement.
-    textbutton _("Igpay Atinlay") action Language("finnois")
-                ^
+File "game/script.rpy", line 114: Line is indented, but the preceding show screen statement statement does not expect a block. Please check this line's indentation.
+    imagebutton:
+    ^
 
 Ren'Py Version: Ren'Py 7.4.11.2266
-Sat May 21 13:35:28 2022
+Sat May 21 17:48:09 2022

@@ -1,13 +1,13 @@
-Sat May 21 16:51:46 2022
+Sat May 21 17:51:06 2022
 Linux-5.17.6-1-MANJARO-x86_64-with-glibc2.2.5
 Ren'Py 7.4.11.2266
  
 
-Bootstrap to the start of init.init took 0.05s
+Bootstrap to the start of init.init took 0.06s
 Early init took 0.00s
 Loader init took 0.00s
 Loading error handling took 0.01s
-Loading script took 0.08s
+Loading script took 0.09s
 Loading save slot metadata. took 0.00s
 Loading persistent took 0.00s
 Importing _renpysteam: ImportError('No module named _renpysteam',)
@@ -16,7 +16,7 @@ Loading analysis data took 0.01s
 Analyze and compile ATL took 0.00s
 Index archives took 0.00s
 Backing up script files to '/home/exiel/.renpy/backups/60 Seconde pour Survivre Xavier':
-Dump and make backups. took 0.04s
+Dump and make backups. took 0.05s
 Cleaning cache took 0.00s
 Making clean stores took 0.00s
 Initial gc. took 0.02s
@@ -29,7 +29,7 @@ Load screen analysis took 0.00s
 Analyze screens took 0.01s
 Save screen analysis took 0.02s
 Prepare screens took 0.05s
-Save pyanalysis. took 0.00s
+Save pyanalysis. took 0.02s
 Save bytecode. took 0.02s
 Running _start took 0.00s
 Performance test:
@@ -45,10 +45,3 @@ Version: '4.6 (Compatibility Profile) Mesa 22.0.3'
 Display Info: None
 Screen sizes: virtual=(1920, 1080) physical=(1739, 978) drawable=(1739, 978)
 Maximum texture size: 4096x4096
-Cleaning stores took 0.00s
-Init translation took 0.00s
-Build styles took 0.00s
-Load screen analysis took 0.01s
-Analyze screens took 0.00s
-Prepare screens took 0.00s
-Running _start took 0.00s

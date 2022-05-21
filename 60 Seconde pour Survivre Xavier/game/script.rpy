@@ -10,9 +10,17 @@ define t = Character("Thomas")
 define A = Character("Anne")
 define b = Character("Benoît")
 
-# Define Image Scenes
+# Define Image house Scenes
 image hall = im.Scale("house/hall.jpg", 1920, 1080)
 image bunker = im.Scale("house/bunker.jpg", 1920, 1080)
+image chambre = im.Scale("house/chambre.jpg", 1920, 1080)
+image maison = im.Scale("house/maison.jpg", 1920, 1080)
+image salle_a_manger = im.Scale("house/salle_a_manger.jpg", 1920, 1080)
+image salon = im.Scale("house/salon.jpg", 1920, 1080)
+image salle_de_bain = im.Scale("house/sdb.jpg", 1920, 1080)
+
+# Define Image Items
+image soup = im.Scale("items/soup.png", 30, 50)
 
 screen countdown:
     timer 0.01 repeat True action If(time > 0, true=SetVariable('time', time - 0.01), false=[Hide('countdown'), Jump(timer_jump)])
@@ -73,32 +81,109 @@ screen soup:
         imagebutton:
             xpos 190
             ypos 450
-            idle "soup.png"
+            idle "items/soup.png"
             at custom_zoom
             action [SetVariable("soup_1", soup_1 + 1), Jump("add_soup")]
     if soup_2 == 0:
         imagebutton:
             xpos 490
             ypos 450
-            idle "soup.png"
+            idle "items/soup.png"
             at custom_zoom
             action [SetVariable("soup_2", soup_1 + 1), Jump("add_soup")]
     if soup_3 == 0:
         imagebutton:
             xpos 790
             ypos 450
-            idle "soup.png"
+            idle "items/soup.png"
             at custom_zoom
             action [SetVariable("soup_3", soup_1 + 1), Jump("add_soup")]
     if soup_4 == 0:
         imagebutton:
             xpos 1090
             ypos 450
-            idle "soup.png"
+            idle "items/soup.png"
             at custom_zoom
             action [SetVariable("soup_4", soup_1 + 1), Jump("add_soup")]
 
 # The game starts here.
+
+label hall:
+    scene hall
+    show screen soup
+    screen arrow_hall:
+        imagebutton:
+            xpos 1500
+            ypos 600
+            idle "arrow/arrow_top.png"
+            at custom_zoom
+            action [Hide("arrow_hall"), Hide("soup"), Jump("chambre")]
+    show screen arrow_hall
+    jump continue
+
+label chambre:
+    scene chambre
+    screen arrow_chambre:
+        imagebutton:
+            xpos 1500
+            ypos 600
+            idle "arrow/arrow_top.png"
+            at custom_zoom
+            action [Hide("arrow_hall"), Hide("soup"), Jump("chambre")]
+    show screen arrow_hall
+    jump continue
+
+label bunker:
+    scene bunker
+    jump continue
+
+label cuisine:
+    scene cuisine
+    screen arrow_cuisine:
+        imagebutton:
+            xpos 1500
+            ypos 600
+            idle "arrow/arrow_top.png"
+            at custom_zoom
+            action [Hide("arrow_hall"), Hide("soup"), Jump("chambre")]
+    show screen arrow_hall
+    jump continue
+
+label salle_a_manger:
+    scene salle_a_manger
+    screen arrow_sam:
+        imagebutton:
+            xpos 1500
+            ypos 600
+            idle "arrow/arrow_top.png"
+            at custom_zoom
+            action [Hide("arrow_hall"), Hide("soup"), Jump("chambre")]
+    show screen arrow_hall
+    jump continue
+
+label salle_de_bain:
+    scene salle_de_bain
+    screen arrow_sdb:
+        imagebutton:
+            xpos 1500
+            ypos 600
+            idle "arrow/arrow_top.png"
+            at custom_zoom
+            action [Hide("arrow_hall"), Hide("soup"), Jump("chambre")]
+    show screen arrow_hall
+    jump continue
+
+label salon:
+    scene salon
+    screen arrow_salon:
+        imagebutton:
+            xpos 1500
+            ypos 600
+            idle "arrow/arrow_top.png"
+            at custom_zoom
+            action [Hide("arrow_hall"), Hide("soup"), Jump("chambre")]
+    show screen arrow_hall
+    jump continue
 
 label start:
 
@@ -110,8 +195,7 @@ label start:
 
     "Ce jeu est basé sur des fait réels..."
 
-    scene hall
-    jump continue
+    jump hall
 
     # This shows a character sprite. A placeholder is used, but you can
     # replace it by adding a file named "eileen happy.png" to the images
@@ -121,7 +205,6 @@ label start:
 
         show screen countdown
         show screen infos
-        show screen soup
 
         # These display lines of dialogue.
 
