@@ -2,9 +2,13 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 81: expected ':' not found.
-    label continue
-                  ^
+File "game/script.rpy", line 31: expected statement.
+    textbutton _("English") action Language(None)
+                ^
+
+File "game/script.rpy", line 32: expected statement.
+    textbutton _("Igpay Atinlay") action Language("finnois")
+                ^
 
 Ren'Py Version: Ren'Py 7.4.11.2266
-Sat May 21 12:56:59 2022
+Sat May 21 13:35:28 2022

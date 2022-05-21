@@ -1,52 +1,22 @@
 ﻿I'm sorry, but an uncaught exception occurred.
 
-After initialization, but before game start.
-  File "game/script.rpy", line 53, in prepare_screen
-    screen soup:
-  File "game/script.rpy", line 53, in prepare
-    screen soup:
-  File "game/script.rpy", line 54, in prepare
-    if soup_1 == 0:
-  File "game/script.rpy", line 54, in prepare
-    if soup_1 == 0:
-  File "game/script.rpy", line 55, in prepare
-    imagebutton:
-  File "game/script.rpy", line 55, in prepare
-    imagebutton:
-SyntaxError: invalid syntax (script.rpy, line 60)
+While running game code:
+  File "game/script.rpy", line 105, in script
+    jump language_chooser
+ScriptError: could not find label 'language_chooser'.
 
 -- Full Traceback ------------------------------------------------------------
 
 Full traceback:
-  File "/home/exiel/renpy-7.4.11-sdk/renpy/bootstrap.py", line 331, in bootstrap
-    renpy.main.main()
-  File "/home/exiel/renpy-7.4.11-sdk/renpy/main.py", line 662, in main
-    run(restart)
-  File "/home/exiel/renpy-7.4.11-sdk/renpy/main.py", line 97, in run
-    renpy.display.screen.prepare_screens()
-  File "/home/exiel/renpy-7.4.11-sdk/renpy/display/screen.py", line 955, in prepare_screens
-    s.ast.prepare_screen()
-  File "game/script.rpy", line 53, in prepare_screen
-    screen soup:
-  File "game/script.rpy", line 53, in prepare
-    screen soup:
-  File "game/script.rpy", line 54, in prepare
-    if soup_1 == 0:
-  File "game/script.rpy", line 54, in prepare
-    if soup_1 == 0:
-  File "game/script.rpy", line 55, in prepare
-    imagebutton:
-  File "game/script.rpy", line 55, in prepare
-    imagebutton:
-  File "/home/exiel/renpy-7.4.11-sdk/renpy/pyanalysis.py", line 714, in ast_eval
-    return self.ast_eval_literal(expr)[0]
-  File "/home/exiel/renpy-7.4.11-sdk/renpy/pyanalysis.py", line 696, in ast_eval_literal
-    expr = py_compile(expr, 'eval', ast_node=True)
-  File "/home/exiel/renpy-7.4.11-sdk/renpy/python.py", line 835, in py_compile
-    raise e
-SyntaxError: invalid syntax (script.rpy, line 60)
+  File "game/script.rpy", line 105, in script
+    jump language_chooser
+  File "/home/exiel/renpy-7.4.11-sdk/renpy/ast.py", line 1757, in execute
+    rv = renpy.game.script.lookup(target)
+  File "/home/exiel/renpy-7.4.11-sdk/renpy/script.py", line 918, in lookup
+    raise ScriptError("could not find label '%s'." % str(original))
+ScriptError: could not find label 'language_chooser'.
 
 Linux-5.17.6-1-MANJARO-x86_64-with-glibc2.2.5
 Ren'Py 7.4.11.2266
 60 Seconde pour Survivre Xavier 1.0
-Sat May 21 12:44:33 2022
+Sat May 21 13:36:57 2022

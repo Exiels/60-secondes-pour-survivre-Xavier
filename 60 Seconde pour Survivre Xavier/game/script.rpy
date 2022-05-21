@@ -10,6 +10,10 @@ define t = Character("Thomas")
 define A = Character("Anne")
 define b = Character("Benoît")
 
+# Define Image Scenes
+image hall = im.Scale("house/hall.jpg", 1920, 1080)
+image bunker = im.Scale("house/bunker.jpg", 1920, 1080)
+
 screen countdown:
     timer 0.01 repeat True action If(time > 0, true=SetVariable('time', time - 0.01), false=[Hide('countdown'), Jump(timer_jump)])
 
@@ -19,6 +23,15 @@ screen countdown:
 
 transform custom_zoom:
     zoom 0.2
+
+init -3 python:
+    if persistent.lang is None:
+        persistent.lang = "english"
+
+    lang = persistent.lang
+
+init python:
+    config.main_menu.insert(3, (u'Language', "language_chooser", "True"))
 
 init:
     $ time = 60
@@ -37,6 +50,7 @@ init:
     $ soup_2 = 0
     $ soup_3 = 0
     $ soup_4 = 0
+
 
 label xavier_caught_you:
     "Malheureusement, vous avez été trop lent... Xavier vous a attrapé avant que vous n'atténiez le bunker."
@@ -96,7 +110,7 @@ label start:
 
     "Ce jeu est basé sur des fait réels..."
 
-    scene bg house
+    scene hall
     jump continue
 
     # This shows a character sprite. A placeholder is used, but you can
