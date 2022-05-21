@@ -29,8 +29,12 @@ define config.version = "1.0"
 ## Text that is placed on the game's about screen. Place the text between the
 ## triple-quotes, and leave a blank line between paragraphs.
 
-define gui.about = _p("""
-""")
+define gui.about = _p("""Game created for the 3rd Epitech JAM of 2022 with the colaboration of
+Eléonore Wichegrod
+Nathan Duchesne
+Enzo Monnier
+Benoît Brunet
+Pierre-Alaint Alliot""")
 
 
 ## A short name for the game used for executables and directories in the built
@@ -48,7 +52,7 @@ define build.name = "60SecondepourSurvivreXavier"
 
 define config.has_sound = True
 define config.has_music = True
-define config.has_voice = True
+define config.has_voice = False
 
 
 ## To allow the user to play a test sound on the sound or voice channel,
