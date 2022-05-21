@@ -18,16 +18,18 @@ image maison = im.Scale("house/maison.jpg", 1920, 1080)
 image salle_a_manger = im.Scale("house/salle_a_manger.jpg", 1920, 1080)
 image salon = im.Scale("house/salon.jpg", 1920, 1080)
 image salle_de_bain = im.Scale("house/sdb.jpg", 1920, 1080)
+image cuisine = im.Scale("house/cuisine.jpg", 1920, 1080)
 
 # Define Image Items
 image soup = im.Scale("items/soup.png", 30, 50)
 
 screen countdown:
-    timer 0.01 repeat True action If(time > 0, true=SetVariable('time', time - 0.01), false=[Hide('countdown'), Jump(timer_jump)])
+    if bunker == 0:
+        timer 0.01 repeat True action If(time > 0, true=SetVariable('time', time - 0.01), false=[Hide('countdown'), Jump(timer_jump)])
 
-    side "tl":
-        frame xpos 20 ypos 20:
-            text str(time)
+        side "tl":
+            frame xpos 20 ypos 20:
+                text str(time)
 
 transform custom_zoom:
     zoom 0.2
@@ -45,6 +47,7 @@ init:
     $ time = 60
     $ timer_range = 5
     $ timer_jump = 'xavier_caught_you'
+    $ bunker = 0
 
     $ nb_food = 0
     $ nb_drink = 0
@@ -80,220 +83,153 @@ label add_soup:
 
 label hall:
     scene hall
-    screen items_hall:
-        if soup_1 == 0:
-            imagebutton:
-                xpos 190
-                ypos 450
-                idle "items/soup.png"
-                at custom_zoom
-                action [SetVariable("soup_1", soup_1 + 1), Jump("add_soup")]
-        if soup_2 == 0:
-            imagebutton:
-                xpos 490
-                ypos 450
-                idle "items/soup.png"
-                at custom_zoom
-                action [SetVariable("soup_2", soup_1 + 1), Jump("add_soup")]
-        if soup_3 == 0:
-            imagebutton:
-                xpos 790
-                ypos 450
-                idle "items/soup.png"
-                at custom_zoom
-                action [SetVariable("soup_3", soup_1 + 1), Jump("add_soup")]
-        if soup_4 == 0:
-            imagebutton:
-                xpos 1090
-                ypos 450
-                idle "items/soup.png"
-                at custom_zoom
-                action [SetVariable("soup_4", soup_1 + 1), Jump("add_soup")]
-    screen arrow_hall:
-        imagebutton:
-            xpos 1500
-            ypos 600
-            idle "arrow/arrow_top.png"
-            at custom_zoom
-            action [Hide("arrow_hall"), Hide("items_hall"), Jump("chambre")]
+    pause 0.5
     show screen arrow_hall
     show screen items_hall
+    screen items_hall:
+        imagebutton:
+            xpos 0
+            ypos 0
+            idle "empty.png"
+            at custom_zoom
+            action [Jump("add_soup")]
+    screen arrow_hall:
+        imagebutton:
+            xpos 1130
+            ypos 100
+            idle "arrow/arrow_left.png"
+            at custom_zoom
+            action [Hide("arrow_hall"), Hide("items_hall"), Jump("chambre")]
+        imagebutton:
+            xpos 1300
+            ypos 100
+            idle "arrow/arrow_right.png"
+            at custom_zoom
+            action [Hide("arrow_hall"), Hide("items_hall"), Jump("salle_de_bain")]
+        imagebutton:
+            xpos 750
+            ypos 500
+            idle "arrow/arrow_top.png"
+            at custom_zoom
+            action [Hide("arrow_hall"), Hide("items_hall"), Jump("bunker")]
+        imagebutton:
+            xpos 150
+            ypos 600
+            idle "arrow/arrow_left.png"
+            at custom_zoom
+            action [Hide("arrow_hall"), Hide("items_hall"), Jump("salon")]
+        imagebutton:
+            xpos 1650
+            ypos 600
+            idle "arrow/arrow_right.png"
+            at custom_zoom
+            action [Hide("arrow_hall"), Hide("items_hall"), Jump("salle_a_manger")]
     jump continue
 
 label chambre:
     scene chambre
+    pause 0.5
     screen items_chambre:
-        if soup_1 == 0:
-            imagebutton:
-                xpos 190
-                ypos 450
-                idle "items/soup.png"
-                at custom_zoom
-                action [SetVariable("soup_1", soup_1 + 1), Jump("add_soup")]
-        if soup_2 == 0:
-            imagebutton:
-                xpos 490
-                ypos 450
-                idle "items/soup.png"
-                at custom_zoom
-                action [SetVariable("soup_2", soup_1 + 1), Jump("add_soup")]
-        if soup_3 == 0:
-            imagebutton:
-                xpos 790
-                ypos 450
-                idle "items/soup.png"
-                at custom_zoom
-                action [SetVariable("soup_3", soup_1 + 1), Jump("add_soup")]
-        if soup_4 == 0:
-            imagebutton:
-                xpos 1090
-                ypos 450
-                idle "items/soup.png"
-                at custom_zoom
-                action [SetVariable("soup_4", soup_1 + 1), Jump("add_soup")]
+        imagebutton:
+            xpos 0
+            ypos 0
+            idle "empty.png"
+            at custom_zoom
+            action [Jump("add_soup")]
     screen arrow_chambre:
         imagebutton:
-            xpos 1500
-            ypos 600
-            idle "arrow/arrow_top.png"
+            xpos 150
+            ypos 500
+            idle "arrow/arrow_left.png"
             at custom_zoom
-            action [Hide("arrow_chambre"), Hide("items_chambre"), Jump("chambre")]
-    show screen arrow_hall
+            action [Hide("arrow_chambre"), Hide("items_chambre"), Jump("hall")]
+    show screen arrow_chambre
     show screen items_chambre
     jump continue
 
 label bunker:
     scene bunker
+    $ bunker = 1
     jump continue
 
 label cuisine:
     scene cuisine
+    pause 0.5
     screen items_cuisine:
-        if soup_1 == 0:
-            imagebutton:
-                xpos 190
-                ypos 450
-                idle "items/soup.png"
-                at custom_zoom
-                action [SetVariable("soup_1", soup_1 + 1), Jump("add_soup")]
-        if soup_2 == 0:
-            imagebutton:
-                xpos 490
-                ypos 450
-                idle "items/soup.png"
-                at custom_zoom
-                action [SetVariable("soup_2", soup_1 + 1), Jump("add_soup")]
-        if soup_3 == 0:
-            imagebutton:
-                xpos 790
-                ypos 450
-                idle "items/soup.png"
-                at custom_zoom
-                action [SetVariable("soup_3", soup_1 + 1), Jump("add_soup")]
-        if soup_4 == 0:
-            imagebutton:
-                xpos 1090
-                ypos 450
-                idle "items/soup.png"
-                at custom_zoom
-                action [SetVariable("soup_4", soup_1 + 1), Jump("add_soup")]
+        imagebutton:
+            xpos 0
+            ypos 0
+            idle "empty.png"
+            at custom_zoom
+            action [Jump("add_soup")]
     screen arrow_cuisine:
         imagebutton:
-            xpos 1500
+            xpos 1700
             ypos 600
-            idle "arrow/arrow_top.png"
+            idle "arrow/arrow_right.png"
             at custom_zoom
-            action [Hide("arrow_cuisine"), Hide("items_cuisine"), Jump("chambre")]
-    show screen arrow_hall
+            action [Hide("arrow_cuisine"), Hide("items_cuisine"), Jump("salle_a_manger")]
+        imagebutton:
+            xpos 100
+            ypos 600
+            idle "arrow/arrow_left.png"
+            at custom_zoom
+            action [Hide("arrow_cuisine"), Hide("items_cuisine"), Jump("salon")]
+    show screen arrow_cuisine
     show screen items_cuisine
     jump continue
 
 label salle_a_manger:
     scene salle_a_manger
+    pause 0.5
     screen items_sam:
-        if soup_1 == 0:
-            imagebutton:
-                xpos 190
-                ypos 450
-                idle "items/soup.png"
-                at custom_zoom
-                action [SetVariable("soup_1", soup_1 + 1), Jump("add_soup")]
-        if soup_2 == 0:
-            imagebutton:
-                xpos 490
-                ypos 450
-                idle "items/soup.png"
-                at custom_zoom
-                action [SetVariable("soup_2", soup_1 + 1), Jump("add_soup")]
-        if soup_3 == 0:
-            imagebutton:
-                xpos 790
-                ypos 450
-                idle "items/soup.png"
-                at custom_zoom
-                action [SetVariable("soup_3", soup_1 + 1), Jump("add_soup")]
-        if soup_4 == 0:
-            imagebutton:
-                xpos 1090
-                ypos 450
-                idle "items/soup.png"
-                at custom_zoom
-                action [SetVariable("soup_4", soup_1 + 1), Jump("add_soup")]
+        imagebutton:
+            xpos 0
+            ypos 0
+            idle "empty.png"
+            at custom_zoom
+            action [Jump("add_soup")]
     screen arrow_sam:
         imagebutton:
-            xpos 1500
-            ypos 600
-            idle "arrow/arrow_top.png"
+            xpos 950
+            ypos 900
+            idle "arrow/arrow_bot.png"
             at custom_zoom
-            action [Hide("arrow_sam"), Hide("items_sam"), Jump("chambre")]
-    show screen arrow_hall
+            action [Hide("arrow_sam"), Hide("items_sam"), Jump("hall")]
+        imagebutton:
+            xpos 100
+            ypos 600
+            idle "arrow/arrow_left.png"
+            at custom_zoom
+            action [Hide("arrow_sam"), Hide("items_sam"), Jump("cuisine")]
+    show screen arrow_sam
     show screen items_sam
     jump continue
 
 label salle_de_bain:
     scene salle_de_bain
+    pause 0.5
     screen items_sdb:
-        if soup_1 == 0:
-            imagebutton:
-                xpos 190
-                ypos 450
-                idle "items/soup.png"
-                at custom_zoom
-                action [SetVariable("soup_1", soup_1 + 1), Jump("add_soup")]
-        if soup_2 == 0:
-            imagebutton:
-                xpos 490
-                ypos 450
-                idle "items/soup.png"
-                at custom_zoom
-                action [SetVariable("soup_2", soup_1 + 1), Jump("add_soup")]
-        if soup_3 == 0:
-            imagebutton:
-                xpos 790
-                ypos 450
-                idle "items/soup.png"
-                at custom_zoom
-                action [SetVariable("soup_3", soup_1 + 1), Jump("add_soup")]
-        if soup_4 == 0:
-            imagebutton:
-                xpos 1090
-                ypos 450
-                idle "items/soup.png"
-                at custom_zoom
-                action [SetVariable("soup_4", soup_1 + 1), Jump("add_soup")]
+        imagebutton:
+            xpos 0
+            ypos 0
+            idle "empty.png"
+            at custom_zoom
+            action [Jump("add_soup")]
     screen arrow_sdb:
         imagebutton:
-            xpos 1500
+            xpos 100
             ypos 600
-            idle "arrow/arrow_top.png"
+            idle "arrow/arrow_left.png"
             at custom_zoom
-            action [Hide("arrow_sdb"), Hide("items_sdb"), Jump("chambre")]
-    show screen arrow_hall
+            action [Hide("arrow_hall"), Hide("items_hall"), Jump("hall")]
+    show screen arrow_sdb
     show screen items_sdb
     jump continue
 
 label salon:
     scene salon
+    pause 0.5
     screen items_salon:
         if soup_1 == 0:
             imagebutton:
@@ -302,35 +238,20 @@ label salon:
                 idle "items/soup.png"
                 at custom_zoom
                 action [SetVariable("soup_1", soup_1 + 1), Jump("add_soup")]
-        if soup_2 == 0:
-            imagebutton:
-                xpos 490
-                ypos 450
-                idle "items/soup.png"
-                at custom_zoom
-                action [SetVariable("soup_2", soup_1 + 1), Jump("add_soup")]
-        if soup_3 == 0:
-            imagebutton:
-                xpos 790
-                ypos 450
-                idle "items/soup.png"
-                at custom_zoom
-                action [SetVariable("soup_3", soup_1 + 1), Jump("add_soup")]
-        if soup_4 == 0:
-            imagebutton:
-                xpos 1090
-                ypos 450
-                idle "items/soup.png"
-                at custom_zoom
-                action [SetVariable("soup_4", soup_1 + 1), Jump("add_soup")]
     screen arrow_salon:
         imagebutton:
-            xpos 1500
+            xpos 1700
             ypos 600
-            idle "arrow/arrow_top.png"
+            idle "arrow/arrow_right.png"
             at custom_zoom
-            action [Hide("arrow_salon"), Hide("items_salon"), Jump("chambre")]
-    show screen arrow_hall
+            action [Hide("arrow_cuisine"), Hide("items_cuisine"), Jump("hall")]
+        imagebutton:
+            xpos 100
+            ypos 600
+            idle "arrow/arrow_left.png"
+            at custom_zoom
+            action [Hide("arrow_cuisine"), Hide("items_cuisine"), Jump("salle_a_manger")]
+    show screen arrow_salon
     show screen items_salon
     jump continue
 

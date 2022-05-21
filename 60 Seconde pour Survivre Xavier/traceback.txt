@@ -1,34 +1,44 @@
 ﻿I'm sorry, but an uncaught exception occurred.
 
-While running game code:
-  File "game/script.rpy", line 23, in script
-    image arrow_right = image("arrow/arrow_right.png")
-  File "game/script.rpy", line 23, in script
-    image arrow_right = image("arrow/arrow_right.png")
-  File "game/script.rpy", line 23, in <module>
-    image arrow_right = image("arrow/arrow_right.png")
-NameError: name 'image' is not defined
+After initialization, but before game start.
+  File "game/script.rpy", line 25, in prepare_screen
+    screen countdown:
+  File "game/script.rpy", line 25, in prepare
+    screen countdown:
+  File "game/script.rpy", line 26, in prepare
+    timer 0.01 repeat True action If(time > 0 && bunker == 0, true=SetVariable('time', time - 0.01), false=[Hide('countdown'), Jump(timer_jump)])
+  File "game/script.rpy", line 26, in prepare
+    timer 0.01 repeat True action If(time > 0 && bunker == 0, true=SetVariable('time', time - 0.01), false=[Hide('countdown'), Jump(timer_jump)])
+SyntaxError: invalid syntax (script.rpy, line 26)
 
 -- Full Traceback ------------------------------------------------------------
 
 Full traceback:
   File "/home/exiel/renpy-7.4.11-sdk/renpy/bootstrap.py", line 331, in bootstrap
     renpy.main.main()
-  File "/home/exiel/renpy-7.4.11-sdk/renpy/main.py", line 560, in main
-    renpy.game.context().run(node)
-  File "game/script.rpy", line 23, in script
-    image arrow_right = image("arrow/arrow_right.png")
-  File "game/script.rpy", line 23, in script
-    image arrow_right = image("arrow/arrow_right.png")
-  File "/home/exiel/renpy-7.4.11-sdk/renpy/ast.py", line 1027, in execute
-    img = renpy.python.py_eval_bytecode(self.code.bytecode)
-  File "/home/exiel/renpy-7.4.11-sdk/renpy/python.py", line 2269, in py_eval_bytecode
-    return eval(bytecode, globals, locals)
-  File "game/script.rpy", line 23, in <module>
-    image arrow_right = image("arrow/arrow_right.png")
-NameError: name 'image' is not defined
+  File "/home/exiel/renpy-7.4.11-sdk/renpy/main.py", line 662, in main
+    run(restart)
+  File "/home/exiel/renpy-7.4.11-sdk/renpy/main.py", line 97, in run
+    renpy.display.screen.prepare_screens()
+  File "/home/exiel/renpy-7.4.11-sdk/renpy/display/screen.py", line 955, in prepare_screens
+    s.ast.prepare_screen()
+  File "game/script.rpy", line 25, in prepare_screen
+    screen countdown:
+  File "game/script.rpy", line 25, in prepare
+    screen countdown:
+  File "game/script.rpy", line 26, in prepare
+    timer 0.01 repeat True action If(time > 0 && bunker == 0, true=SetVariable('time', time - 0.01), false=[Hide('countdown'), Jump(timer_jump)])
+  File "game/script.rpy", line 26, in prepare
+    timer 0.01 repeat True action If(time > 0 && bunker == 0, true=SetVariable('time', time - 0.01), false=[Hide('countdown'), Jump(timer_jump)])
+  File "/home/exiel/renpy-7.4.11-sdk/renpy/pyanalysis.py", line 714, in ast_eval
+    return self.ast_eval_literal(expr)[0]
+  File "/home/exiel/renpy-7.4.11-sdk/renpy/pyanalysis.py", line 696, in ast_eval_literal
+    expr = py_compile(expr, 'eval', ast_node=True)
+  File "/home/exiel/renpy-7.4.11-sdk/renpy/python.py", line 835, in py_compile
+    raise e
+SyntaxError: invalid syntax (script.rpy, line 26)
 
 Linux-5.17.6-1-MANJARO-x86_64-with-glibc2.2.5
 Ren'Py 7.4.11.2266
 60 Seconde pour Survivre Xavier 1.0
-Sat May 21 17:44:46 2022
+Sat May 21 19:20:33 2022
