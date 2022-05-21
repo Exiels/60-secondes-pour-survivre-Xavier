@@ -2,9 +2,9 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 114: Line is indented, but the preceding show screen statement statement does not expect a block. Please check this line's indentation.
-    imagebutton:
-    ^
+File "game/script.rpy", line 361: expected ':' not found.
+    label continue
+                  ^
 
 Ren'Py Version: Ren'Py 7.4.11.2266
-Sat May 21 17:48:09 2022
+Sat May 21 18:10:21 2022
