@@ -34,6 +34,9 @@ init:
     $ max_drink = 10
 
     $ soup_1 = 0
+    $ soup_2 = 0
+    $ soup_3 = 0
+    $ soup_4 = 0
 
 label xavier_caught_you:
     "Malheureusement, vous avez été trop lent... Xavier vous a attrapé avant que vous n'atténiez le bunker."
@@ -49,6 +52,7 @@ label add_soup:
         "Vous avez trouvé une soupe !"
     else:
         "Vous avez trop de nourriture sur vous !"
+    jump continue
 
 screen soup:
     if soup_1 == 0:
@@ -58,6 +62,27 @@ screen soup:
             idle "soup.png"
             at custom_zoom
             action [SetVariable("soup_1", soup_1 + 1), Jump("add_soup")]
+    if soup_2 == 0:
+        imagebutton:
+            xpos 490
+            ypos 450
+            idle "soup.png"
+            at custom_zoom
+            action [SetVariable("soup_2", soup_1 + 1), Jump("add_soup")]
+    if soup_3 == 0:
+        imagebutton:
+            xpos 790
+            ypos 450
+            idle "soup.png"
+            at custom_zoom
+            action [SetVariable("soup_3", soup_1 + 1), Jump("add_soup")]
+    if soup_4 == 0:
+        imagebutton:
+            xpos 1090
+            ypos 450
+            idle "soup.png"
+            at custom_zoom
+            action [SetVariable("soup_4", soup_1 + 1), Jump("add_soup")]
 
 # The game starts here.
 
@@ -72,18 +97,21 @@ label start:
     "Ce jeu est basé sur des fait réels..."
 
     scene bg house
+    jump continue
 
     # This shows a character sprite. A placeholder is used, but you can
     # replace it by adding a file named "eileen happy.png" to the images
     # directory.
 
-    show screen countdown
-    show screen infos
-    show screen soup
+    label continue:
 
-    # These display lines of dialogue.
+        show screen countdown
+        show screen infos
+        show screen soup
 
-    pause
+        # These display lines of dialogue.
+
+        pause
 
     # This ends the game.
 
