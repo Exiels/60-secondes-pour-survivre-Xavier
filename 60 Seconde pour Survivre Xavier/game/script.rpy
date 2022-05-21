@@ -17,29 +17,21 @@ screen countdown:
         text str(time)
 
 init:
-    $ timer_range = 0
-    $ timer_jump = 0
-
-label menu1:
     $ time = 60
     $ timer_range = 5
-    $ timer_jump = 'menu1_slow'
-    show screen countdown
-    menu:
-        "Choice 1":
-            hide screen countdown
-            e "You chose 'Choice 1'"
-            jump menu1_end
-        "Choice 2":
-            hide screen countdown
-            e "You chose 'Choice 2'"
-            jump menu1_end
+    $ timer_jump = 'xavier_caught_you'
 
-label menu1_slow:
-    e "You didn't choose anything."
+    $ nb_food = 0
+    $ nb_drink = 0
+    $ nb_child = 0
+    $ is_down = 0
 
-label menu1_end:
-    e "Anyway, let's do something else."
+    $ max_food = 10
+    $ max_drink = 10
+
+label xavier_caught_you:
+    "Malheureusement, vous avez été trop lent... Xavier vous a attrapé avant que vous n'atténiez le bunker."
+    return
 
 # The game starts here.
 
@@ -57,11 +49,11 @@ label start:
 
     show eileen happy
 
-    jump menu1
+    show screen countdown
 
     # These display lines of dialogue.
 
-    x "Bienvenu dans mon jeu..."
+    "Ce jeu est basé sur des fait réels..."
 
 
     # This ends the game.
