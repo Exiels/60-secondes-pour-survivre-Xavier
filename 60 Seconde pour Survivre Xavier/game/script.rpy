@@ -20,6 +20,11 @@ image salon = im.Scale("house/salon.jpg", 1920, 1080)
 image salle_de_bain = im.Scale("house/sdb.jpg", 1920, 1080)
 image cuisine = im.Scale("house/cuisine.jpg", 1920, 1080)
 
+image Benoit = "familly/Benoit.png"
+image Anne = "familly/Anne.png"
+image Thomas = "familly/Thomas.png"
+image Arthur = "familly/Arthur.png"
+
 # Define Image Items
 image soup = im.Scale("items/soup.png", 30, 50)
 
@@ -48,7 +53,7 @@ init:
     $ timer_range = 5
     $ timer_jump = 'xavier_caught_you'
 
-    $ nb_food = 0
+     $ nb_food = 0
     $ nb_drink = 0
     $ nb_balles = 0
     $ nb_bible = 0
@@ -110,7 +115,7 @@ init:
     $ water_9 = 0
     $ water_10 = 0
 
-    $ balles_1 = 0
+     $ balles_1 = 0
     $ balles_2 = 0
 
     $ bible_1 = 0
@@ -136,9 +141,6 @@ init:
     $ lampe_1 = 0
 
     $ lit_1 = 0
-    $ lit_1 = 0
-    $ lit_1 = 0
-    $ lit_1 = 0
 
     $ radio_1 = 0
 
@@ -148,11 +150,6 @@ init:
     $ table_1 = 0
 
     $ violon_1 = 0
-
-    $ child_1 = 0
-    $ child_1 = 0
-    $ child_1 = 0
-    $ child_1 = 0
 
     $ arthur = True
     $ thomas = True
@@ -178,6 +175,9 @@ init:
     $ arthur_mental = 100
 
     $ music_init = 0
+
+    $ explore = 0
+    $ who_exp = "personne"
 
 
 label xavier_caught_you:
@@ -536,12 +536,89 @@ label continue:
     # This ends the game.
 
 
-# label choose_day: 
-# 
-# 	# faire l’aléatoire sur les jours avec des if et un else qui renvoi à normal_day
+label choose_day: 
+
+    jump normal_day
+
+label manger:
+    menu:
+        "Vérifier l'alimentation de :"
+        "Arthur" if arthur == True:
+            "Arthur peut tenir [arthur_eau] jours sans boire et [arthur_soup] jours sans manger."
+            menu:
+                "Nourrir Arthur" if arthur_soup != 10:
+                    if nb_food == 0:
+                        "Vous n'avez pas assez de soupe."
+                        jump manger
+                    $ arthur_soup = 10
+                    $ nb_food -= 0.5
+                "Hydrater Arthur" if arthur_eau != 5:
+                    if nb_drink == 0:
+                        "Vous n'avez pas assez d'eau."
+                        jump manger
+                    $ arthur_eau = 5
+                    $ nb_drink -= 0.5
+                "Ne rien faire":
+                    jump manger
+            jump manger
+        "Thomas" if thomas == True:
+            "Thomas peut tenir [thomas_eau] jours sans boire et [thomas_soup] jours sans manger."
+            menu:
+                "Nourrir Thomas" if thomas_soup != 10:
+                    if nb_food == 0:
+                        "Vous n'avez pas assez de soupe."
+                        jump manger
+                    $ thomas_soup = 10
+                    $ nb_food -= 0.5
+                "Hydrater Thomas" if thomas_eau != 5:
+                    if nb_drink == 0:
+                        "Vous n'avez pas assez d'eau."
+                        jump manger
+                    $ thomas_eau = 5
+                    $ nb_drink -= 0.5
+                "Ne rien faire":
+                    jump manger
+            jump manger
+        "Anne" if anne == True:
+            "Anne peut tenir [anne_eau] jours sans boire et [anne_soup] jour sans manger."
+            menu:
+                "Nourrir Anne" if anne_soup != 10:
+                    if nb_food == 0:
+                        "Vous n'avez pas assez de soupe."
+                        jump manger
+                    $ anne_soup = 10
+                    $ nb_food -= 0.5
+                "Hydrater Anne" if anne_eau != 5:
+                    if nb_drink == 0:
+                        "Vous n'avez pas assez d'eau."
+                        jump manger
+                    $ anne_eau = 5
+                    $ nb_drink -= 0.5
+                "Ne rien faire":
+                    jump manger
+            jump manger
+        "Benoît" if benoit == True:
+            "Benoît peut tenir [benoit_eau] jours sans boire et [benoit_soup] jours sans manger."
+            menu:
+                "Nourrir Benoît" if benoit_soup != 10:
+                    if nb_food == 0:
+                        "Vous n'avez pas assez de soupe."
+                        jump manger
+                    $ benoit_soup = 10
+                    $ nb_food -= 0.5
+                "Hydrater Benoît" if benoit_eau != 5:
+                    if nb_drink == 0:
+                        "Vous n'avez pas assez d'eau."
+                        jump manger
+                    $ benoit_eau = 5
+                    $ nb_drink -= 0.5
+                "Ne rien faire":
+                    jump manger
+            jump manger
+        "Personne":
+            jump normal_day
 
 label exploration:
-    $explore = renpy.random.randint(1,5)
     menu:
         "Qui est envoyé ?"
         "Benoît" if benoit == True:
@@ -556,52 +633,63 @@ label exploration:
         "Arthur" if arthur == True:
             $ who_exp = "Arthur"
             hide Arthur
+        "Personne":
+            jump normal_day
 
+    $explore = renpy.random.randint(1,5)
     if explore > 1:
-        "{who_exp} part pour {explore} jours d'exploration."
+        "[who_exp] part pour [explore] jours d'exploration."
     else:
-        "{who_exp} part pour {explore} jour d'exploration."
+        "[who_exp] part pour [explore] jour d'exploration."
 
 
 label normal_day: 
 
     if day % 10 == 0: 
 
-        if benoit_soup == 0:
-            "Benoît est mort de faim"
-            $ benoit = False
-            hide Benoit
-        if anne_soup == 0:
-            "Anne est morte de faim"
-            $ anne = False
-            hide Anne
-        if thomas_soup == 0:
-            "Thomas est mort de faim"
-            $ thomas = False
-            hide Thomas
-        if arthur_soup == 0:
-            "Arthur est mort de faim"
-            $ arthur = False
-            hide Thomas
+        if benoit == True:
+            if benoit_soup == 0:
+                "Benoît est mort de déshydratation"
+                $ benoit = False
+                hide Benoit
+        if anne == True:
+            if anne_soup == 0:
+                "Anne est morte de déshydratation"
+                $ anne = False
+                hide Anne
+        if thomas == True:
+            if thomas_soup == 0:
+                "Thomas est mort de déshydratation"
+                $ thomas = False
+                hide Thomas
+        if arthur == True:
+            if arthur_soup == 0:
+                "Arthur est mort de déshydratation"
+                $ arthur = False
+                hide Arthur
 
     if day % 5 == 0:
-
-        if benoit_eau == 0:
-            "Benoît est mort de déshydratation"
-            $ benoit = False
-            hide Benoit
-        if anne_eau == 0:
-            "Anne est morte de déshydratation"
-            $ anne = False
-            hide Anne
-        if thomas_eau == 0:
-            "Thomas est mort de déshydratation"
-            $ thomas = False
-            hide Thomas
-        if arthur_eau == 0:
-            "Arthur est mort de déshydratation"
-            $ arthur = False
-            hide Arthur
+        
+        if benoit == True:
+            if benoit_eau == 0:
+                "Benoît est mort de déshydratation"
+                $ benoit = False
+                hide Benoit
+        if anne == True:
+            if anne_eau == 0:
+                "Anne est morte de déshydratation"
+                $ anne = False
+                hide Anne
+        if thomas == True:
+            if thomas_eau == 0:
+                "Thomas est mort de déshydratation"
+                $ thomas = False
+                hide Thomas
+        if arthur == True:
+            if arthur_eau == 0:
+                "Arthur est mort de déshydratation"
+                $ arthur = False
+                hide Arthur
 
     if arthur == False: 
         if thomas == False:
@@ -617,7 +705,7 @@ label normal_day:
             jump manger 
         "Vérifier la santé mental": 
             jump mental 
-        "Envoyer quelqu’un explorer la maison cette nuit" if explore != 0:
+        "Envoyer quelqu’un explorer la maison cette nuit" if explore == 0:
             jump exploration
         "Finir la journée": 
             jump normal_day_next
@@ -664,5 +752,7 @@ label normal_day_next:
                 "Arthur est revenu d'exploration."
                 $ arthur_mental = 100
                 show Arthur
-            "Sortir a permis à {who_exp} de s'aérer l'esprit, il a refait le plein de santé mental."
+            "Sortir a permis à [who_exp] de s'aérer l'esprit, il a refait le plein de santé mental."
             $ who_exp = "personne"
+
+    jump choose_day
