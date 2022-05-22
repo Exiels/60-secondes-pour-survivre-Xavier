@@ -47,7 +47,6 @@ init:
     $ time = 60
     $ timer_range = 5
     $ timer_jump = 'xavier_caught_you'
-    $ bunker = 0
 
     $ nb_food = 0
     $ nb_drink = 0
@@ -154,6 +153,31 @@ init:
     $ child_1 = 0
     $ child_1 = 0
     $ child_1 = 0
+
+    $ arthur = True
+    $ thomas = True
+    $ anne = True
+    $ benoit = True
+
+    $ day = 0
+    $ bunker = 0
+
+    $ benoit_soup = 10
+    $ anne_soup = 10
+    $ thomas_soup = 10
+    $ arthur_soup = 10
+
+    $ benoit_eau = 5
+    $ anne_eau = 5
+    $ thomas_eau = 5
+    $ arthur_eau = 5
+
+    $ benoit_mental = 100
+    $ anne_mental = 100
+    $ thomas_mental = 100
+    $ arthur_mental = 100
+
+    $ music_init = 0
 
 
 label xavier_caught_you:
@@ -303,6 +327,10 @@ label add_violon:
 # The game starts here.
 
 label hall:
+    if music_init == 0:
+        play music "audio/BGM/outbreak.mp3"
+        play sound "audio/sound_effect/bruit-de-porte-toc-toc.mp3"
+        $ music_init += 1
     scene hall
     pause 0.5
     show screen arrow_hall
@@ -347,6 +375,7 @@ label hall:
             action [Hide("arrow_hall"), Hide("items_hall"), Jump("salle_a_manger")]
     jump continue
 
+
 label chambre:
     scene chambre
     pause 0.5
@@ -369,6 +398,8 @@ label chambre:
     jump continue
 
 label bunker:
+    play music "audio/BGM/stress.mp3" fadeout 1
+    play sound "audio/sound_effect/bruit-de-porte-toc-toc.mp3"
     scene bunker
     $ bunker = 1
     jump continue
@@ -484,7 +515,7 @@ label start:
 
     scene black
 
-    "Ce jeu est basé sur des fait réels..."
+    "Ce jeu est basé sur des faits réels..."
 
     jump hall
 
@@ -492,12 +523,146 @@ label start:
     # replace it by adding a file named "eileen happy.png" to the images
     # directory.
 
-    label continue:
+label continue:
 
-        show screen countdown
-        show screen infos
+    show screen countdown
+    show screen infos
 
-        # These display lines of dialogue.
+    # These display lines of dialogue.
 
-        pause
+    pause
+
     jump continue
+    # This ends the game.
+
+
+# label choose_day: 
+# 
+# 	# faire l’aléatoire sur les jours avec des if et un else qui renvoi à normal_day
+
+label exploration:
+    $explore = renpy.random.randint(1,5)
+    menu:
+        "Qui est envoyé ?"
+        "Benoît" if benoit == True:
+            $ who_exp = "Benoit"
+            hide Benoit
+        "Anne" if anne == True:
+            $ who_exp = "Anne"
+            hide Anne
+        "Thomas" if thomas == True:
+            $ who_exp = "Thomas"
+            hide Thomas
+        "Arthur" if arthur == True:
+            $ who_exp = "Arthur"
+            hide Arthur
+
+    if explore > 1:
+        "{who_exp} part pour {explore} jours d'exploration."
+    else:
+        "{who_exp} part pour {explore} jour d'exploration."
+
+
+label normal_day: 
+
+    if day % 10 == 0: 
+
+        if benoit_soup == 0:
+            "Benoît est mort de faim"
+            $ benoit = False
+            hide Benoit
+        if anne_soup == 0:
+            "Anne est morte de faim"
+            $ anne = False
+            hide Anne
+        if thomas_soup == 0:
+            "Thomas est mort de faim"
+            $ thomas = False
+            hide Thomas
+        if arthur_soup == 0:
+            "Arthur est mort de faim"
+            $ arthur = False
+            hide Thomas
+
+    if day % 5 == 0:
+
+        if benoit_eau == 0:
+            "Benoît est mort de déshydratation"
+            $ benoit = False
+            hide Benoit
+        if anne_eau == 0:
+            "Anne est morte de déshydratation"
+            $ anne = False
+            hide Anne
+        if thomas_eau == 0:
+            "Thomas est mort de déshydratation"
+            $ thomas = False
+            hide Thomas
+        if arthur_eau == 0:
+            "Arthur est mort de déshydratation"
+            $ arthur = False
+            hide Arthur
+
+    if arthur == False: 
+        if thomas == False:
+            if anne == False:
+                if benoit == False:
+                    scene black
+                    "Toute la famille est morte.\nVous n’avez pas survécu à Xavier."
+                    return 
+
+    menu:
+        "Voulez-vous faire une action particulière ?"
+        "Regarder les stats d’alimentation et d’hydratation": 
+            jump manger 
+        "Vérifier la santé mental": 
+            jump mental 
+        "Envoyer quelqu’un explorer la maison cette nuit" if explore != 0:
+            jump exploration
+        "Finir la journée": 
+            jump normal_day_next
+
+label normal_day_next:
+    if benoit == True:
+        if who_exp != "Benoit":
+            $ benoit_eau -= 1
+            $ benoit_soup -= 1
+            $ benoit_mental -= 5
+    if anne == True:
+        if who_exp != "Anne":
+            $ anne_eau -= 1
+            $ anne_soup -= 1
+            $ anne_mental -= 5
+    if thomas == True:
+        if who_exp != "Thomas":
+            $ thomas_eau -= 1
+            $ thomas_soup -= 1
+            $ thomas_mental -= 5
+    if arthur == True:
+        if who_exp != "Arthur":
+            $ arthur_eau -= 1
+            $ arthur_soup -= 1
+            $ arthur_mental -= 5
+
+    $ day += 1
+    if explore != 0:
+        $ explore -= 1
+        if explore == 0:
+            if who_exp == "Benoit":
+                "Benoît est revenu d'exploration."
+                $ benoit_mental = 100
+                show Benoit
+            if who_exp == "Anne":
+                "Anne est revenue d'exploration."
+                $ anne_mental = 100
+                show Anne
+            if who_exp == "Thomas":
+                "Thomas est revenu d'exploration."
+                $ thomas_mental = 100
+                show Thomas
+            if who_exp == "Arthur":
+                "Arthur est revenu d'exploration."
+                $ arthur_mental = 100
+                show Arthur
+            "Sortir a permis à {who_exp} de s'aérer l'esprit, il a refait le plein de santé mental."
+            $ who_exp = "personne"
