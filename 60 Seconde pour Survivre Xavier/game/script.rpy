@@ -18,7 +18,6 @@ image maison = im.Scale("house/maison.jpg", 1920, 1080)
 image salle_a_manger = im.Scale("house/salle_a_manger.jpg", 1920, 1080)
 image salon = im.Scale("house/salon.jpg", 1920, 1080)
 image salle_de_bain = im.Scale("house/sdb.jpg", 1920, 1080)
-image cuisine = im.Scale("house/cuisine.jpg", 1920, 1080)
 
 # Define Image Items
 image soup = im.Scale("items/soup.png", 30, 50)
@@ -47,7 +46,6 @@ init:
     $ time = 60
     $ timer_range = 5
     $ timer_jump = 'xavier_caught_you'
-    $ bunker = 0
 
     $ nb_food = 0
     $ nb_drink = 0
@@ -61,6 +59,11 @@ init:
     $ soup_2 = 0
     $ soup_3 = 0
     $ soup_4 = 0
+
+    $ arthur == True
+    $ thomas == True
+    $ anne == True
+    $ benoit == True
 
 
 label xavier_caught_you:
@@ -126,6 +129,7 @@ label hall:
             action [Hide("arrow_hall"), Hide("items_hall"), Jump("salle_a_manger")]
     jump continue
 
+
 label chambre:
     scene chambre
     pause 0.5
@@ -147,10 +151,10 @@ label chambre:
     show screen items_chambre
     jump continue
 
-label bunker:
-    scene bunker
-    $ bunker = 1
-    jump continue
+    label bunker:
+        scene bunker
+        $ bunker = 1
+        jump continue
 
 label cuisine:
     scene cuisine
@@ -263,7 +267,7 @@ label start:
 
     scene black
 
-    "Ce jeu est basé sur des fait réels..."
+    "Ce jeu est basé sur des faits réels..."
 
     jump hall
 
@@ -279,4 +283,78 @@ label start:
         # These display lines of dialogue.
 
         pause
+
     jump continue
+    # This ends the game.
+
+
+label choose_day: 
+
+	# faire l’aléatoire sur les jours avec des if et un else qui renvoi à normal_day 
+
+ 
+
+label expedition: 
+
+	 
+
+ 
+
+label normal_day: 
+
+	if day%10 == 0: 
+
+		if benoit_soup == 0:
+			"Benoît est mort de faim"
+			benoit = False
+            hide Benoit
+		if anne_soup == 0:
+			"Anne est morte de faim"
+			anne = False
+            hide Anne
+		if thomas_soup == 0:
+			"Thomas est mort de faim"
+			thomas = False
+            hide Thomas
+		if arthur_soup == 0:
+			"Arthur est mort de faim"
+			arthur = False
+            hide Thomas
+
+	if day%5 == 0:
+
+		if benoit_eau == 0:
+			"Benoît est mort de déshydratation"
+			benoit = False
+		if anne_eau == 0:
+			"Anne est morte de déshydratation"
+			anne = False
+		if thomas_eau == 0:
+			"Thomas est mort de déshydratation"
+			thomas = False
+		if arthur_eau == 0:
+			"Arthur est mort de déshydratation"
+			arthur = False 
+
+	if arthur == False && thomas == False && anne == False && benoit == False:
+
+		scene black
+		"Toute la famille est morte.\nVous n’avez pas survécu à Xavier."
+		return 
+
+	menu:
+		"Voulez-vous faire une action particulière ?"
+		"Regarder les stats d’alimentation et d’hydratation": 
+			jump manger 
+		"Vérifier la santé mental": 
+			jump mental 
+		"Envoyer quelqu’un explorer la maison cette nuit": 
+			$ explore = renpy.random.randint(1,3)		 
+        "Finir la journée": 
+            jump choose_day 
+
+	    if explore != 0:
+
+            menu:
+                "Qui est envoyé ?"
+                 "Benoît" if benoit == True: 
