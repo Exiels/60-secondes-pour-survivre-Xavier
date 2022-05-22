@@ -60,10 +60,29 @@ init:
     $ soup_3 = 0
     $ soup_4 = 0
 
-    $ arthur == True
-    $ thomas == True
-    $ anne == True
-    $ benoit == True
+    $ arthur = True
+    $ thomas = True
+    $ anne = True
+    $ benoit = True
+
+    $ day = 0
+    $ bunker = 0
+
+    $ benoit_soup = 10
+    $ anne_soup = 10
+    $ thomas_soup = 10
+    $ arthur_soup = 10
+
+    $ benoit_eau = 5
+    $ anne_eau = 5
+    $ thomas_eau = 5
+    $ arthur_eau = 5
+
+    $ benoit_mental = 100
+    $ anne_mental = 100
+    $ thomas_mental = 100
+    $ arthur_mental = 100
+
 
 
 label xavier_caught_you:
@@ -151,10 +170,10 @@ label chambre:
     show screen items_chambre
     jump continue
 
-    label bunker:
-        scene bunker
-        $ bunker = 1
-        jump continue
+label bunker:
+    scene bunker
+    $ bunker = 1
+    jump continue
 
 label cuisine:
     scene cuisine
@@ -275,14 +294,14 @@ label start:
     # replace it by adding a file named "eileen happy.png" to the images
     # directory.
 
-    label continue:
+label continue:
 
-        show screen countdown
-        show screen infos
+    show screen countdown
+    show screen infos
 
-        # These display lines of dialogue.
+    # These display lines of dialogue.
 
-        pause
+    pause
 
     jump continue
     # This ends the game.
@@ -290,57 +309,80 @@ label start:
 
 label choose_day: 
 
-	# faire l’aléatoire sur les jours avec des if et un else qui renvoi à normal_day 
+	# faire l’aléatoire sur les jours avec des if et un else qui renvoi à normal_day
 
- 
+label exploration:
 
-label expedition: 
+	$ explore = renpy.random.randint(1,5)
+    menu:
+        "Qui est envoyé ?"
+        "Benoît" if benoit == True:
+            $ who_exp = "Benoit"
+            hide Benoit
+        "Anne" if anne == True:
+            $ who_exp = "Anne"
+            hide Anne
+        "Thomas" if thomas == True:
+            $ who_exp = "Thomas"
+            hide Thomas
+        "Arthur" if arthur == True:
+            $ who_exp = "Arthur"
+            hide Arthur
 
-	 
+    if explore > 1:
+        "%s part pour %d jours d'exploration." who_exp explore
+    else:
+        "%s part pour %d jour d'exploration." who_exp explore
 
- 
 
 label normal_day: 
 
-	if day%10 == 0: 
+	if day % 10 == 0: 
 
 		if benoit_soup == 0:
 			"Benoît est mort de faim"
-			benoit = False
+			$ benoit = False
             hide Benoit
 		if anne_soup == 0:
 			"Anne est morte de faim"
-			anne = False
+			$ anne = False
             hide Anne
 		if thomas_soup == 0:
 			"Thomas est mort de faim"
-			thomas = False
+			$ thomas = False
             hide Thomas
 		if arthur_soup == 0:
 			"Arthur est mort de faim"
-			arthur = False
+			$ arthur = False
             hide Thomas
 
-	if day%5 == 0:
+	if day % 5 == 0:
 
 		if benoit_eau == 0:
 			"Benoît est mort de déshydratation"
-			benoit = False
+			$ benoit = False
+            hide Benoit
 		if anne_eau == 0:
 			"Anne est morte de déshydratation"
-			anne = False
+			$ anne = False
+            hide Anne
 		if thomas_eau == 0:
 			"Thomas est mort de déshydratation"
-			thomas = False
+			$ thomas = False
+            hide Thomas
 		if arthur_eau == 0:
 			"Arthur est mort de déshydratation"
-			arthur = False 
+			$ arthur = False
+            hide Arthur
 
-	if arthur == False && thomas == False && anne == False && benoit == False:
+	if arthur == False: 
+        if thomas == False:
+            if anne == False:
+                if benoit == False:
 
-		scene black
-		"Toute la famille est morte.\nVous n’avez pas survécu à Xavier."
-		return 
+		            scene black
+		            "Toute la famille est morte.\nVous n’avez pas survécu à Xavier."
+		            return 
 
 	menu:
 		"Voulez-vous faire une action particulière ?"
@@ -348,13 +390,52 @@ label normal_day:
 			jump manger 
 		"Vérifier la santé mental": 
 			jump mental 
-		"Envoyer quelqu’un explorer la maison cette nuit": 
-			$ explore = renpy.random.randint(1,3)		 
+		"Envoyer quelqu’un explorer la maison cette nuit" if explore != 0:
+            jump exploration		 
         "Finir la journée": 
-            jump choose_day 
+            jump normal_day_next
 
-	    if explore != 0:
+label normal_day_next:
+    if benoit == True:
+        if who_exp != "Benoit":
+            $ benoit_eau -= 1
+            $ benoit_soup -= 1
+            $ benoit_mental -= 5
+    if anne == True:
+        if who_exp != "Anne":
+            $ anne_eau -= 1
+            $ anne_soup -= 1
+            $ anne_mental -= 5
+    if thomas == True:
+        if who_exp != "Thomas":
+            $ thomas_eau -= 1
+            $ thomas_soup -= 1
+            $ thomas_mental -= 5
+    if arthur == True:
+        if who_exp != "Arthur"
+            $ arthur_eau -= 1
+            $ arthur_soup -= 1
+            $ arthur_mental -= 5
 
-            menu:
-                "Qui est envoyé ?"
-                 "Benoît" if benoit == True: 
+    $ day += 1
+    if explore != 0:
+        $ explore -= 1
+        if explore == 0:
+            if who_exp == "Benoit":
+                "Benoît est revenu d'exploration."
+                $ benoit_mental = 100
+                show Benoit
+            if who_exp == "Anne":
+                "Anne est revenue d'exploration."
+                $ anne_mental = 100
+                show Anne
+            if who_exp == "Thomas":
+                "Thomas est revenu d'exploration."
+                $ thomas_mental = 100
+                show Thomas
+            if who_exp == "Arthur"
+                "Arthur est revenu d'exploration."
+                $ arthur_mental = 100
+                show Arthur
+            "Sortir a permis à %s de s'aérer l'esprit, il a refait le plein de santé mental." who_exp
+            who_exp = "personne"
