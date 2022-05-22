@@ -24,6 +24,7 @@ image Benoit = "familly/Benoit.png"
 image Anne = "familly/Anne.png"
 image Thomas = "familly/Thomas.png"
 image Arthur = "familly/Arthur.png"
+image Xavier = im.Scale("familly/Xavier.png", 800, 1000)
 
 # Define Image Items
 image soup = im.Scale("items/soup.png", 30, 50)
@@ -87,7 +88,7 @@ init:
     $ nb_sac = 0
     $ nb_table = 0
     $ nb_violon = 0
-    $ nb_child = 0
+    $ nb_child = 4
     $ is_down = 0
 
     $ max_food = 10
@@ -215,8 +216,8 @@ label add_soup:
 
 label add_soup_1:
     if nb_food < max_food:
-        $ nb_soup += 2
-        $ nb_food += 1
+        $ nb_soup += 1
+        $ nb_food += 2
         "Vous avez trouvé une soupe !"
     else:
         "Vous avez trop de nourriture sur vous !"
@@ -224,8 +225,8 @@ label add_soup_1:
 
 label add_soup_2:
     if nb_food < max_food:
-        $ nb_soup += 4
-        $ nb_food += 1
+        $ nb_soup += 1
+        $ nb_food += 4
         "Vous avez trouvé une soupe !"
     else:
         "Vous avez trop de nourriture sur vous !"
@@ -233,8 +234,8 @@ label add_soup_2:
 
 label add_soup_3:
     if nb_food < max_food:
-        $ nb_food += 1
-        $ nb_soup += 7
+        $ nb_food += 7
+        $ nb_soup += 1
         "Vous avez trouvé une soupe !"
     else:
         "Vous avez trop de nourriture sur vous !"
@@ -476,7 +477,7 @@ label bunker:
     play sound "audio/sound_effect/bruit-de-porte-toc-toc.mp3"
     scene bunker
     $ bunker = 1
-    jump continue
+    jump first_day
 
 label cuisine:
     scene cuisine
@@ -710,15 +711,181 @@ label continue:
     jump continue
     # This ends the game.
 
+label first_day:
+
+    show Benoit:
+        xalign 0.2
+        yalign 0.8
+    show Anne:
+        xalign 0.4
+        yalign 0.8
+    show Thomas:
+        xalign 0.6
+        yalign 0.8
+    show Arthur:
+        xalign 0.8
+        yalign 0.8
+
+    "Vous êtes rentré à temps dans le bunker."
+    "Vous entendez Xavier, votre père, cogner à la porte."
+    "Vous êtes coincé ici."
+    "Heureusement, en fouillant un peu le bunker, vous trouvez de l'eau et de la soupe en boite."
+    $ nb_food += 3
+    $ nb_eau += 3
+    "Vous avez [nb_food] soupes et [nb_eau] bouteilles eau pour vous alimenter."
+    if nb_cartes != 0 and nb_bible != 0 and nb_violon != 0:
+        "Vous avez [nb_cartes] jeux des 7 Familles, [nb_violon] violons et [nb_bible] bibles pour vous divertir."
+    if nb_cartes != 0 and nb_bible != 0 and nb_violon == 0:
+        "Vous avez [nb_cartes] jeux des 7 Familles et [nb_bible] bibles pour vous divertir."
+    if nb_cartes != 0 and nb_bible == 0 and nb_violon == 0:
+        "Vous avez [nb_cartes] jeux des 7 Familles pour vous divertir."
+        "Il n'y a rien de plus précieux que la famille !"
+    if nb_cartes == 0 and nb_bible != 0 and nb_violon != 0:
+        "Vous avez [nb_bible] bibles et [nb_violon] violons pour vous divertir."
+        "Le catholisme et la musique, le propre de la famille Dupont de Ligonnès."
+    if nb_cartes == 0 and nb_bible != 0 and nb_violon == 0:
+        "Vous avez [nb_bible] bibles pour vous divertir."
+    if nb_cartes != 0 and nb_bible == 0 and nb_violon != 0:
+        "Vous avez [nb_cartes] jeux des 7 Familles et [nb_violon] violons pour vous divertir."
+    if nb_kit_med != 0:
+        "Heureusement, vous avez [nb_kit_med] kit médical pour soigner les bobos."
+    if nb_hache != 0:
+        "[nb_hache] hache ne sera pas de trop pour vous protéger de votre père."
+    if nb_fusil != 0:
+        if nb_balles != 0:
+            "Un fusil et [nb_balles] balles, cela sera certainement votre meilleure défense, votre père lui même vous à appris à vous en servir."
+        else:
+            "Un fusil c'est bien, mais avoir des balles aurait été mieux..."
+    if nb_chaise != 0:
+        "La survie va être longue, pouvoir s'assoir confortablement fera défiler le temps plus vite, je suppose..."
+            
+
 
 label choose_day: 
 
+    "La journée est enfin terminée, Xavier est certainement toujours en colère..."
+    "Ca fait [day] jours que vous survivez."
+
+    if day == 2:
+        jump Xavier_toc
+    if day == 56:
+        jump anniversaire_benoit
+    if day == 94:
+        jump anniversaire_arthur
+    if day == 119:
+        jump anniversaire_anne
+
     jump normal_day
+
+label Xavier_toc:
+
+        play sound "audio/sound_effect/bruit-de-porte-toc-toc.mp3"
+        "On frappe à la porte, mais pas comme hier..."
+        x "Les enfants ?"
+        x "Je vais vous faire une offre."
+        x "Vous ne pourrez pas survivre longtemps dans ce bunker avec si peu de réserve."
+        x "Je vous propose donc de vous échanger votre fusil et ses balles contre 2 canettes de soupe et 3 bouteilles d'eau chacun."
+
+        menu:
+            x "Qu'en pensez-vous ?"
+            "Donner le fusil et les balles" if nb_fusil != 0 and nb_balles != 0:
+                x "Que vous êtes stupides !"
+                show Xavier
+                with hpunch
+                x "DADDY IS HERE !"
+                hide Benoit
+                hide Anne
+                hide Thomas
+                hide Arthur
+                scene black
+                "Xavier a tué tous ses enfants de deux balles dans la tête."
+                "La réalité a rattrapé la fiction."
+                return
+            "Donner le fusil uniquement" if nb_fusil != 0:
+                x "Je trouverais bien les balles..."
+                $ nb_fusil -= 1
+                jump normal_day
+            "Donner les balles uniquement" if nb_balles != 0:
+                x "Vous êtes de petits malins... Vous ne m'échapperez pas longtemp."
+                $ nb_balles -= 1
+                jump normal_day
+            "Ne rien donner":
+                x "Vous regretterez cette décision."
+                jump normal_day
+
+label anniversaire_benoit:
+    "Aujourd'hui c'est l'anniversaire de Benoît !"
+
+    play sound "audio/sound_effect/bruit-de-porte-toc-toc.mp3"
+
+    "On frappe à la porte... Mais ça ne ressemble pas à Xavier."
+    "Prêtre" "Mes enfants, je saviez que vous étiez là !"
+    "Prêtre" "J'ai remarqué la disparition de Benoît."
+    "Prêtre" "Je peux le sauver.\nSi vous me le laissez, je le sortirai des griffes de votre père."
+    "Prêtre" "Malheureusement, je ne peux que le prendre lui, mais à vous autre, je peux vous donner une boite de soupe et une bouteille d'eau chacun !"
+
+    menu:
+        "Libérer Benoît" if benoit == True and who_exp != "Benoit":
+            "Prêtre" "Merci de votre confiance ! Viens, jeune homme."
+            $ nb_child -= 1
+            $ nb_soup += nb_child
+            $ nb_eau += nb_child
+            hide Benoit
+            $ benoit = False
+            if nb_radio != 0:
+                "On entendit plus tard à la radio que Benoît avait subit les sévices sexuel du prêtre."
+                "Il s'est suicidé."
+            jump normal_day
+        "Garder Benoît" if benoit == True and who_exp != "Benoit":
+            "Prêtre" "Que Dieu vous vienne en aide."
+            "Prêtre" "Tenez, prennez ma bible."
+            $ nb_bible += 1
+            jump normal_day
+        "Benoît est malheureusement mort..." if benoit == False:
+            "Prêtre" "J'arrive donc trop tard..."
+            "Prêtre" "Que Dieu vous protège.\nPrenez donc ma bible, mon eau et ma soupe."
+            $ nb_bible += 1
+            $ nb_food += nb_child
+            $ nb_eau += nb_child
+            jump normal_day
+        "Benoît n'est pas là." if who_exp == "Benoît":
+            "Prêtre" "Ah bon ?"
+            "Prêtre" "..."
+            "Prêtre" "Je sens son odeur..."
+            "Le prêtre a pris en chasse Benoît.\nIl l'a trouvé et nous n'avons plus jamais revu Benoît après avoir entendu son cri."
+            $ benoit = False
+            $ nb_child -= 1
+            $ who_exp = "personne"
+            $ explore = 0
+            jump normal_day
+
+
+label anniversaire_arthur:
+    "Bon anniversaire Athur !"
+    "Nous sommes le 7 juillet."
+
+    if arthur == True:
+        "Vous trouvez un papier coincé dans les briques du mur."
+        "Cette note vous donne une recette pour transformer la poussière en eau."
+        "Malheureusement cette recette ne fonctionnera qu'une fois."
+        "Toutefois, vous gagnez quand même une bouteille chacun !"
+        $ nb_eau += nb_child
+    jump normal_day
+
+label anniversaire_anne:
+    "C'est l'anniversaire d'Anne !"
+    "Déjà 17 ans ! Nous sommes le 2 août."
+
+    if anne == True:
+        play sound "audio/sound_effect/bruit-de-porte-toc-toc.mp3"
+        "Tiens ? Ca frappe à la porte, mais différemment de quand Xavier le fait..."
+        "Les voisins" ""
+        
 
 label manger:
     menu:
         "Vérifier l'alimentation de :"
-        "Arthur" if arthur == True:
+        "Arthur" if arthur == True and who_exp != "Arthur":
             "Arthur peut tenir [arthur_eau] jours sans boire et [arthur_soup] jours sans manger."
             menu:
                 "Nourrir Arthur" if arthur_soup != 10:
@@ -728,15 +895,15 @@ label manger:
                     $ arthur_soup = 10
                     $ nb_food -= 0.5
                 "Hydrater Arthur" if arthur_eau != 5:
-                    if nb_drink == 0:
+                    if nb_eau == 0:
                         "Vous n'avez pas assez d'eau."
                         jump manger
                     $ arthur_eau = 5
-                    $ nb_drink -= 0.5
+                    $ nb_eau -= 0.5
                 "Ne rien faire":
                     jump manger
             jump manger
-        "Thomas" if thomas == True:
+        "Thomas" if thomas == True and who_exp != "Thomas":
             "Thomas peut tenir [thomas_eau] jours sans boire et [thomas_soup] jours sans manger."
             menu:
                 "Nourrir Thomas" if thomas_soup != 10:
@@ -746,15 +913,15 @@ label manger:
                     $ thomas_soup = 10
                     $ nb_food -= 0.5
                 "Hydrater Thomas" if thomas_eau != 5:
-                    if nb_drink == 0:
+                    if nb_eau == 0:
                         "Vous n'avez pas assez d'eau."
                         jump manger
                     $ thomas_eau = 5
-                    $ nb_drink -= 0.5
+                    $ nb_eau -= 0.5
                 "Ne rien faire":
                     jump manger
             jump manger
-        "Anne" if anne == True:
+        "Anne" if anne == True and who_exp != "Anne":
             "Anne peut tenir [anne_eau] jours sans boire et [anne_soup] jour sans manger."
             menu:
                 "Nourrir Anne" if anne_soup != 10:
@@ -764,15 +931,15 @@ label manger:
                     $ anne_soup = 10
                     $ nb_food -= 0.5
                 "Hydrater Anne" if anne_eau != 5:
-                    if nb_drink == 0:
+                    if nb_eau == 0:
                         "Vous n'avez pas assez d'eau."
                         jump manger
                     $ anne_eau = 5
-                    $ nb_drink -= 0.5
+                    $ nb_eau -= 0.5
                 "Ne rien faire":
                     jump manger
             jump manger
-        "Benoît" if benoit == True:
+        "Benoît" if benoit == True and who_exp != "Benoit":
             "Benoît peut tenir [benoit_eau] jours sans boire et [benoit_soup] jours sans manger."
             menu:
                 "Nourrir Benoît" if benoit_soup != 10:
@@ -782,16 +949,120 @@ label manger:
                     $ benoit_soup = 10
                     $ nb_food -= 0.5
                 "Hydrater Benoît" if benoit_eau != 5:
-                    if nb_drink == 0:
+                    if nb_eau == 0:
                         "Vous n'avez pas assez d'eau."
                         jump manger
                     $ benoit_eau = 5
-                    $ nb_drink -= 0.5
+                    $ nb_eau -= 0.5
                 "Ne rien faire":
                     jump manger
             jump manger
         "Personne":
             jump normal_day
+
+label mental:
+    menu:
+        "Vérifier la santé de :"
+        "Arthur" if arthur == True and who_exp != "Arthur":
+            "Arthur a [arthur_mental]\% de santé mental."
+            if arthur_mental < 20:
+                "Il serait peut-être bien de s'occuper d'Arthur, son état se dégrade..."
+            menu:
+                "Jouer avec Arthur" if nb_cartes != 0:
+                    $ arthur_mental = 80
+                    jump mental
+                "Jouer pour Arthur" if nb_violon != 0:
+                    $ arthur_mental = 100
+                    jump mental
+                "Lire des psaumes" if nb_bible != 0:
+                    $ arthur_mental = 100 - day
+                    "Arthur perd un peu plus la foi chaque jour qui passe, même si ça fait un peu de bien."
+                    jump mental
+                "Utiliser le kit médical" if nb_kit_med != 0:
+                    "C'est une solution bien étrange..."
+                    "Cependant Arthur a bien rit, il est plus stable mentalement que jamais"
+                    "Par contre ce n'est pas le cas de Benoît qui est très anxieux dans ce bunker"
+                    $ benoit_mental -= 30
+                    $ nb_kit_med -= 1
+                    $ arthur_mental = 200
+                    jump mental
+                "Ne rien faire":
+                    jump mental
+            jump mental
+        "Thomas" if thomas == True and who_exp != "Thomas":
+            "Thomas a [thomas_mental]\% de santé mental."
+            menu:
+                "Jouer avec Thomas" if nb_cartes != 0:
+                    $ thomas_mental = 100
+                    jump mental
+                "Jouer pour Thomas" if nb_violon != 0:
+                    $ thomas_mental = 30
+                    "Cette mélodie est un peu triste pour Thomas, son truc c'est la batterie...'"
+                    jump mental
+                "Lire des psaumes" if nb_bible != 0:
+                    $ thomas_mental = 80
+                    jump mental
+                "Utiliser le kit médical" if nb_kit_med != 0:
+                    "C'est une solution bien étrange..."
+                    "Cependant Thomas a bien rit, il est plus stable mentalement que jamais"
+                    "Par contre ce n'est pas le cas de Benoît qui est très anxieux dans ce bunker"
+                    $ benoit_mental -= 30
+                    $ nb_kit_med -= 1
+                    $ thomas_mental = 200
+                    jump mental
+                "Ne rien faire":
+                    jump mental
+            jump mental
+        "Anne" if anne == True and who_exp != "Anne":
+            "Anne a [anne_mental]\% de santé mental."
+            menu:
+                "Jouer avec Anne" if nb_cartes != 0:
+                    $ anne_mental = 100 - (day + 5)
+                    "Anne sent les regards sur elle quand elle joue..."
+                    jump mental
+                "Jouer pour Anne" if nb_violon != 0:
+                    $ anne_mental = 90
+                    jump mental
+                "Lire des psaumes" if nb_bible != 0:
+                    $ anne_mental = 80
+                    jump mental
+                "Utiliser le kit médical" if nb_kit_med != 0:
+                    "C'est une solution bien étrange..."
+                    "Cependant Anne a bien rit, il est plus stable mentalement que jamais"
+                    "Par contre ce n'est pas le cas de Benoît qui est très anxieux dans ce bunker"
+                    $ benoit_mental -= 30
+                    $ nb_kit_med -= 1
+                    $ anne_mental = 200
+                    jump mental
+                "Ne rien faire":
+                    jump mental
+            jump mental
+        "Benoît" if benoit == True and who_exp != "Benoit":
+            "Benoît a [benoit_mental]\% de santé mental."
+            menu:
+                "Jouer avec Benoît" if nb_cartes != 0:
+                    $ benoit_mental = 150
+                    "Benoît sent le sens de la famille monter en lui"
+                    jump mental
+                "Jouer pour Benoît" if nb_violon != 0:
+                    $ benoit_mental = 50
+                    jump mental
+                "Lire des psaumes" if nb_bible != 0:
+                    $ benoit_mental = 90
+                    jump mental
+                "Utiliser le kit médical" if nb_kit_med != 0:
+                    "C'est une solution bien étrange..."
+                    "Ca ne fait pas rire Benoît qui est déjà bien assez inquiet."
+                    "Vous l'avez détruit psychologiquement, cela peut avoir des conséquences..."
+                    $ nb_kit_med -= 1
+                    $ benoit_mental = -100
+                    jump mental
+                "Ne rien faire":
+                    jump mental
+            jump mental
+        "Personne":
+            jump normal_day
+    
 
 label exploration:
     menu:
@@ -811,7 +1082,7 @@ label exploration:
         "Personne":
             jump normal_day
 
-    $explore = renpy.random.randint(1,5)
+    $ explore = renpy.random.randint(1,5)
     if explore > 1:
         "[who_exp] part pour [explore] jours d'exploration."
     else:
@@ -820,51 +1091,55 @@ label exploration:
 
 label normal_day: 
 
-    if day % 10 == 0: 
+    if benoit == True:
+        if benoit_soup == 0:
+            "Benoît est mort de déshydratation"
+            $ benoit = False
+            $ nb_child -= 1
+            hide Benoit
+    if anne == True:
+        if anne_soup == 0:
+            "Anne est morte de déshydratation"
+            $ anne = False
+            $ nb_child -= 1
+            hide Anne
+    if thomas == True:
+        if thomas_soup == 0:
+            "Thomas est mort de déshydratation"
+            $ thomas = False
+            $ nb_child -= 1
+            hide Thomas
+    if arthur == True:
+        if arthur_soup == 0:
+            "Arthur est mort de déshydratation"
+            $ arthur = False
+            $ nb_child -= 1
+            hide Arthur
 
-        if benoit == True:
-            if benoit_soup == 0:
-                "Benoît est mort de déshydratation"
-                $ benoit = False
-                hide Benoit
-        if anne == True:
-            if anne_soup == 0:
-                "Anne est morte de déshydratation"
-                $ anne = False
-                hide Anne
-        if thomas == True:
-            if thomas_soup == 0:
-                "Thomas est mort de déshydratation"
-                $ thomas = False
-                hide Thomas
-        if arthur == True:
-            if arthur_soup == 0:
-                "Arthur est mort de déshydratation"
-                $ arthur = False
-                hide Arthur
-
-    if day % 5 == 0:
-
-        if benoit == True:
-            if benoit_eau == 0:
-                "Benoît est mort de déshydratation"
-                $ benoit = False
-                hide Benoit
-        if anne == True:
-            if anne_eau == 0:
-                "Anne est morte de déshydratation"
-                $ anne = False
-                hide Anne
-        if thomas == True:
-            if thomas_eau == 0:
-                "Thomas est mort de déshydratation"
-                $ thomas = False
-                hide Thomas
-        if arthur == True:
-            if arthur_eau == 0:
-                "Arthur est mort de déshydratation"
-                $ arthur = False
-                hide Arthur
+    if benoit == True:
+        if benoit_eau == 0:
+            "Benoît est mort de déshydratation"
+            $ benoit = False
+            $ nb_child -= 1
+            hide Benoit
+    if anne == True:
+        if anne_eau == 0:
+            "Anne est morte de déshydratation"
+            $ anne = False
+            $ nb_child -= 1
+            hide anne
+    if thomas == True:
+        if thomas_eau == 0:
+            "Thomas est mort de déshydratation"
+            $ thomas = False
+            $ nb_child -= 1
+            hide Thomas
+    if arthur == True:
+        if arthur_eau == 0:
+            "Arthur est mort de déshydratation"
+            $ arthur = False
+            $ nb_child -= 1
+            hide Arthur
 
     if arthur == False: 
         if thomas == False:
@@ -878,7 +1153,7 @@ label normal_day:
         "Voulez-vous faire une action particulière ?"
         "Regarder les stats d’alimentation et d’hydratation": 
             jump manger 
-        "Vérifier la santé mental": 
+        "Vérifier la santé de la fraterie": 
             jump mental 
         "Envoyer quelqu’un explorer la maison cette nuit" if explore == 0:
             jump exploration
@@ -907,27 +1182,74 @@ label normal_day_next:
             $ arthur_soup -= 1
             $ arthur_mental -= 5
 
+    if anne_mental < 20 or benoit_mental < 20 or thomas_mental < 20 or arthur_mental < 20:
+        "L'un des enfants est fou... Quelqu'un a mangé 2 boites de soupes pendant que tout le monde dormait."
+        "Les enfants deviennent méfiants entre eux..."
+        $ anne_mental -= 20
+        $ arthur_mental -= 20
+        $ thomas_mental -= 20
+        $ benoit_mental -= 20
+        $ nb_food -= 2
+        if nb_food < 0:
+            $ nb_food = 0
+        "Il vous reste maintenant [nb_food] soupes, on espère pouvoir tenir avec ça..."
+
     $ day += 1
     if explore != 0:
         $ explore -= 1
-        if explore == 0:
+        $ xavier_found_you = renpy.random.randint(0,(20 - explore))
+        if xavier_found_you == 2:
+            "[who_exp] met trop de temps à revenir..."
+            "On a entendu un hurlement tout à l'heure, ça fait un survivant de moins..."
+            if who_exp == "Benoit":
+                $ benoit = False
+                $ nb_child -= 1
+            if who_exp == "Anne":
+                $ anne = False
+                $ nb_child -= 1
+            if who_exp == "Thomas":
+                $ thomas = False
+                $ nb_child -= 1
+            if who_exp == "Arthur":
+                $ arthur = False
+                $ nb_child -= 1
+            $ explore = 0
+            $ who_exp = "personne"
+        if explore == 0 and who_exp != "personne":
             if who_exp == "Benoit":
                 "Benoît est revenu d'exploration."
                 $ benoit_mental = 100
-                show Benoit
+                $ benoit_eau = 5
+                $ who_exp = "personne"
+                show Benoit:
+                    xalign 0.2
+                    yalign 0.8
             if who_exp == "Anne":
                 "Anne est revenue d'exploration."
                 $ anne_mental = 100
-                show Anne
+                $ anne_eau = 5
+                $ who_exp = "personne"
+                show Anne:
+                    xalign 0.4
+                    yalign 0.8
             if who_exp == "Thomas":
                 "Thomas est revenu d'exploration."
                 $ thomas_mental = 100
-                show Thomas
+                $ thomas_eau = 5
+                $ who_exp = "personne"
+                show Thomas:
+                    xalign 0.6
+                    yalign 0.8
             if who_exp == "Arthur":
                 "Arthur est revenu d'exploration."
                 $ arthur_mental = 100
-                show Arthur
+                $ arthur_eau = 5
+                $ who_exp = "personne"
+                show Arthur:
+                    xalign 0.8
+                    yalign 0.8
             "Sortir a permis à [who_exp] de s'aérer l'esprit, il a refait le plein de santé mental."
-            $ who_exp = "personne"
-
+            $ nb_food += renpy.random.randint(0,3)
+            $ nb_eau += renpy.random.randint(0,5)
+            "Vous avez [nb_food] soupes et [nb_eau] bouteilles d'eau après cette expédition."
     jump choose_day
