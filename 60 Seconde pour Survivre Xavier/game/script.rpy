@@ -39,6 +39,21 @@ screen countdown:
 transform custom_zoom:
     zoom 0.2
 
+transform hache:
+    zoom 0.15
+
+transform fusil:
+    zoom 0.4
+
+transform kit_med:
+    zoom 0.5
+
+transform cadena:
+    zoom 0.05
+
+transform eau:
+    zoom 0.075
+
 init -3 python:
     if persistent.lang is None:
         persistent.lang = "english"
@@ -53,8 +68,10 @@ init:
     $ timer_range = 5
     $ timer_jump = 'xavier_caught_you'
 
-     $ nb_food = 0
-    $ nb_drink = 0
+    $ nb_food = 0
+    $ nb_soup = 0
+    $ nb_water = 0
+    $ nb_eau = 0
     $ nb_balles = 0
     $ nb_bible = 0
     $ nb_cadena = 0
@@ -74,7 +91,7 @@ init:
     $ is_down = 0
 
     $ max_food = 10
-    $ max_drink = 10
+    $ max_water = 10
     $ max_balles = 2
     $ max_bible = 1
     $ max_cadena = 1
@@ -115,7 +132,7 @@ init:
     $ water_9 = 0
     $ water_10 = 0
 
-     $ balles_1 = 0
+    $ balles_1 = 0
     $ balles_2 = 0
 
     $ bible_1 = 0
@@ -196,6 +213,33 @@ label add_soup:
         "Vous avez trop de nourriture sur vous !"
     jump continue
 
+label add_soup_1:
+    if nb_food < max_food:
+        $ nb_soup += 2
+        $ nb_food += 1
+        "Vous avez trouvé une soupe !"
+    else:
+        "Vous avez trop de nourriture sur vous !"
+    jump continue
+
+label add_soup_2:
+    if nb_food < max_food:
+        $ nb_soup += 4
+        $ nb_food += 1
+        "Vous avez trouvé une soupe !"
+    else:
+        "Vous avez trop de nourriture sur vous !"
+    jump continue
+
+label add_soup_3:
+    if nb_food < max_food:
+        $ nb_food += 1
+        $ nb_soup += 7
+        "Vous avez trouvé une soupe !"
+    else:
+        "Vous avez trop de nourriture sur vous !"
+    jump continue
+
 label add_balles:
     if nb_balles < max_balles:
         $ nb_balles += 1
@@ -244,9 +288,28 @@ label add_chaise:
         "Vous avez trop de chaise sur vous !"
     jump continue
 
-label add_water:
+label add_eau_1:
     if nb_water < max_water:
         $ nb_water += 1
+        $ nb_eau += 2
+        "Vous avez trouvé de l'eau !"
+    else:
+        "Vous avez trop d'eau sur vous !"
+    jump continue
+
+label add_eau_2:
+    if nb_water < max_water:
+        $ nb_water += 1
+        $ nb_eau += 4
+        "Vous avez trouvé de l'eau !"
+    else:
+        "Vous avez trop d'eau sur vous !"
+    jump continue
+
+label add_eau_3:
+    if nb_water < max_water:
+        $ nb_water += 1
+        $ nb_eau += 7
         "Vous avez trouvé de l'eau !"
     else:
         "Vous avez trop d'eau sur vous !"
@@ -334,67 +397,78 @@ label hall:
     scene hall
     pause 0.5
     show screen arrow_hall
-    show screen items_hall
-    screen items_hall:
+    if nb_balles == 0:
+        show screen items_balle
+    screen items_balle:
         imagebutton:
             xpos 950
             ypos 450
             idle "items/balles.png"
             at custom_zoom
-            action [Jump("add_balles")]
+            action [Hide("items_balle"), Jump("add_balles")]
     screen arrow_hall:
         imagebutton:
             xpos 1130
             ypos 100
             idle "arrow/arrow_left.png"
             at custom_zoom
-            action [Hide("arrow_hall"), Hide("items_hall"), Jump("chambre")]
+            action [Hide("arrow_hall"), Hide("items_balle"), Jump("chambre")]
         imagebutton:
             xpos 1300
             ypos 100
             idle "arrow/arrow_right.png"
             at custom_zoom
-            action [Hide("arrow_hall"), Hide("items_hall"), Jump("salle_de_bain")]
+            action [Hide("arrow_hall"), Hide("items_balle"), Jump("salle_de_bain")]
         imagebutton:
             xpos 750
             ypos 500
             idle "arrow/arrow_top.png"
             at custom_zoom
-            action [Hide("arrow_hall"), Hide("items_hall"), Jump("bunker")]
+            action [Hide("arrow_hall"), Hide("items_balle"), Jump("bunker")]
         imagebutton:
             xpos 150
             ypos 600
             idle "arrow/arrow_left.png"
             at custom_zoom
-            action [Hide("arrow_hall"), Hide("items_hall"), Jump("salon")]
+            action [Hide("arrow_hall"), Hide("items_balle"), Jump("salon")]
         imagebutton:
             xpos 1650
             ypos 600
             idle "arrow/arrow_right.png"
             at custom_zoom
-            action [Hide("arrow_hall"), Hide("items_hall"), Jump("salle_a_manger")]
+            action [Hide("arrow_hall"), Hide("items_balle"), Jump("salle_a_manger")]
     jump continue
 
 
 label chambre:
     scene chambre
     pause 0.5
-    screen items_chambre:
+    screen items_violon:
         imagebutton:
-            xpos 0
-            ypos 0
-            idle "empty.png"
+            xpos 1025
+            ypos 650
+            idle "items/violon.png"
+            at fusil
+            action [Hide("items_violon"), Jump("add_violon")]
+    screen items_bible:
+        imagebutton:
+            xpos 25
+            ypos 650
+            idle "items/bible.png"
             at custom_zoom
-            action [Jump("add_soup")]
+            action [Hide("items_bible"), Jump("add_bible")]
     screen arrow_chambre:
         imagebutton:
             xpos 150
             ypos 500
             idle "arrow/arrow_left.png"
             at custom_zoom
-            action [Hide("arrow_chambre"), Hide("items_chambre"), Jump("hall")]
+            action [Hide("arrow_chambre"), Hide("items_bible"), Hide("items_violon"), Jump("hall")]
     show screen arrow_chambre
-    show screen items_chambre
+    if nb_bible == 0:
+        show screen items_bible
+    if nb_violon == 0:
+        show screen items_violon
     jump continue
 
 label bunker:
@@ -407,104 +481,205 @@ label bunker:
 label cuisine:
     scene cuisine
     pause 0.5
-    screen items_cuisine:
+    screen items_soupe_1:
         imagebutton:
-            xpos 0
-            ypos 0
-            idle "empty.png"
+            xpos 1500
+            ypos 290
+            idle "items/soup.png"
             at custom_zoom
-            action [Jump("add_soup")]
+            action [Hide("items_soupe_1"), Jump("add_soup_1")]
+    screen items_soupe_2:
+        imagebutton:
+            xpos 1320
+            ypos 545
+            idle "items/soup.png"
+            at custom_zoom
+            action [Hide("items_soupe_2"), Jump("add_soup_2")]
+    screen items_soupe_3:
+        imagebutton:
+            xpos 535
+            ypos 300
+            idle "items/soup.png"
+            at custom_zoom
+            action [Hide("items_soupe_3"), Jump("add_soup_3")]
+    screen items_radio:
+        imagebutton:
+            xpos 1410
+            ypos -50
+            idle "items/radio.png"
+            at fusil
+            action [Hide("items_radio"), Jump("add_radio")]
+    screen items_hache:
+        imagebutton:
+            xpos 1010
+            ypos 685
+            idle "items/hache.png"
+            at hache
+            action [Hide("items_hache"), Jump("add_hache")]
     screen arrow_cuisine:
         imagebutton:
             xpos 1700
             ypos 600
             idle "arrow/arrow_right.png"
             at custom_zoom
-            action [Hide("arrow_cuisine"), Hide("items_cuisine"), Jump("salle_a_manger")]
+            action [Hide("arrow_cuisine"), Hide("items_soupe_1"), Hide("items_soupe_2"), Hide("items_soupe_3"), Hide("items_hache"), Hide("items_radio"), Hide("items_cuisine"), Jump("salle_a_manger")]
         imagebutton:
             xpos 100
             ypos 600
             idle "arrow/arrow_left.png"
             at custom_zoom
-            action [Hide("arrow_cuisine"), Hide("items_cuisine"), Jump("salon")]
+            action [Hide("arrow_cuisine"), Hide("items_soupe_1"), Hide("items_soupe_2"), Hide("items_soupe_3"), Hide("items_hache"), Hide("items_radio"), Hide("items_cuisine"), Jump("salon")]
     show screen arrow_cuisine
-    show screen items_cuisine
+    if nb_hache == 0:
+        show screen items_hache
+    if nb_radio == 0:
+        show screen items_radio
+    if nb_soup != 2 and nb_soup != 6 and nb_soup != 9 and nb_soup != 13:
+        show screen items_soupe_1
+    if nb_soup != 4 and nb_soup != 6 and nb_soup != 11 and nb_soup != 13:
+        show screen items_soupe_2
+    if nb_soup != 7 and nb_soup != 9 and nb_soup != 11 and nb_soup != 13:
+        show screen items_soupe_3
     jump continue
 
 label salle_a_manger:
     scene salle_a_manger
     pause 0.5
-    screen items_sam:
+    screen item_cadena:
         imagebutton:
-            xpos 0
-            ypos 0
-            idle "empty.png"
-            at custom_zoom
-            action [Jump("add_soup")]
+            xpos 1210
+            ypos 415
+            idle "items/cadena.png"
+            at cadena
+            action [Hide("item_cadena"), Jump("add_cadena")]
+    screen item_chaise:
+        imagebutton:
+            xpos 1300
+            ypos 340
+            idle "items/chaise.png"
+            action [Hide("item_chaise"), Jump("add_chaise")]
     screen arrow_sam:
         imagebutton:
             xpos 950
             ypos 900
             idle "arrow/arrow_bot.png"
             at custom_zoom
-            action [Hide("arrow_sam"), Hide("items_sam"), Jump("hall")]
+            action [Hide("arrow_sam"), Hide("item_cadena"), Hide("item_chaise"), Jump("hall")]
         imagebutton:
             xpos 100
             ypos 600
             idle "arrow/arrow_left.png"
             at custom_zoom
-            action [Hide("arrow_sam"), Hide("items_sam"), Jump("cuisine")]
+            action [Hide("arrow_sam"), Hide("item_cadena"), Hide("item_chaise"), Jump("cuisine")]
     show screen arrow_sam
-    show screen items_sam
+    if nb_cadena == 0:
+        show screen item_cadena
+    if nb_chaise == 0:
+        show screen item_chaise
     jump continue
 
 label salle_de_bain:
     scene salle_de_bain
     pause 0.5
-    screen items_sdb:
+    screen items_eau_1:
         imagebutton:
-            xpos 0
-            ypos 0
-            idle "empty.png"
+            xpos 1750
+            ypos 220
+            idle "items/eau.png"
+            at eau
+            action [Hide("items_eau_1"), Jump("add_eau_1")]
+    screen items_eau_2:
+        imagebutton:
+            xpos 1220
+            ypos 545
+            idle "items/eau.png"
+            at eau
+            action [Hide("items_eau_2"), Jump("add_eau_2")]
+    screen items_eau_3:
+        imagebutton:
+            xpos 450
+            ypos 300
+            idle "items/eau.png"
+            at eau
+            action [Hide("items_eau_3"), Jump("add_eau_3")]
+    screen items_kit_med:
+        imagebutton:
+            xpos 650
+            ypos 780
+            idle "items/kit_med.png"
+            at kit_med
+            action [Hide("items_kit_med"), Jump("add_kit_med")]
+    screen items_lampe:
+        imagebutton:
+            xpos 670
+            ypos 140
+            idle "items/lampe.png"
             at custom_zoom
-            action [Jump("add_soup")]
+            action [Hide("items_lampe"), Jump("add_lampe")]
     screen arrow_sdb:
         imagebutton:
             xpos 100
             ypos 600
             idle "arrow/arrow_left.png"
             at custom_zoom
-            action [Hide("arrow_hall"), Hide("items_hall"), Jump("hall")]
+            action [Hide("arrow_hall"), Hide("items_kit_med"), Hide("items_eau_1"), Hide("items_eau_2"), Hide("items_eau_3"), Hide("items_lampe"), Jump("hall")]
     show screen arrow_sdb
-    show screen items_sdb
+    if nb_lampe == 0:
+        show screen items_lampe
+    if nb_kit_med == 0:
+        show screen items_kit_med
+    if nb_eau != 2 and nb_eau != 6 and nb_eau != 9 and nb_eau != 13:
+        show screen items_eau_1
+    if nb_eau != 4 and nb_eau != 6 and nb_eau != 11 and nb_eau != 13:
+        show screen items_eau_2
+    if nb_eau != 7 and nb_eau != 9 and nb_eau != 11 and nb_eau != 13:
+        show screen items_eau_3
     jump continue
 
 label salon:
     scene salon
     pause 0.5
-    screen items_salon:
-        if soup_1 == 0:
-            imagebutton:
-                xpos 190
-                ypos 450
-                idle "items/soup.png"
-                at custom_zoom
-                action [SetVariable("soup_1", soup_1 + 1), Jump("add_soup")]
+    screen items_fusil:
+        imagebutton:
+            xpos 750
+            ypos -25
+            idle "items/fusil.png"
+            at fusil
+            action [Hide("items_fusil"), Jump("add_fusil")]
+    screen items_cartes:
+        imagebutton:
+            xpos 1450
+            ypos 615
+            idle "items/cartes.png"
+            at custom_zoom
+            action [Hide("items_cartes"), Jump("add_cartes")]
+    screen items_cagoule:
+        imagebutton:
+            xpos 910
+            ypos 515
+            idle "items/cagoule.png"
+            at custom_zoom
+            action [Hide("items_cagoule"), Jump("add_cagoule")]
     screen arrow_salon:
         imagebutton:
             xpos 1700
             ypos 600
             idle "arrow/arrow_right.png"
             at custom_zoom
-            action [Hide("arrow_cuisine"), Hide("items_cuisine"), Jump("hall")]
+            action [Hide("arrow_salon"), Hide("items_cagoule"), Hide("items_fusil"), Hide("items_cartes"), Jump("hall")]
         imagebutton:
             xpos 100
             ypos 600
             idle "arrow/arrow_left.png"
             at custom_zoom
-            action [Hide("arrow_cuisine"), Hide("items_cuisine"), Jump("salle_a_manger")]
+            action [Hide("arrow_salon"), Hide("items_cagoule"), Hide("items_fusil"), Hide("items_cartes"), Jump("salle_a_manger")]
     show screen arrow_salon
-    show screen items_salon
+    if nb_cagoule == 0:
+        show screen items_cagoule
+    if nb_fusil == 0:
+        show screen items_fusil
+    if nb_cartes == 0:
+        show screen items_cartes
     jump continue
 
 label start:
@@ -669,7 +844,7 @@ label normal_day:
                 hide Arthur
 
     if day % 5 == 0:
-        
+
         if benoit == True:
             if benoit_eau == 0:
                 "Benoît est mort de déshydratation"
