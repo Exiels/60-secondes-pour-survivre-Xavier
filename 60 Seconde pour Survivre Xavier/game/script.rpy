@@ -51,16 +51,109 @@ init:
 
     $ nb_food = 0
     $ nb_drink = 0
+    $ nb_balles = 0
+    $ nb_bible = 0
+    $ nb_cadena = 0
+    $ nb_cagoule = 0
+    $ nb_cartes = 0
+    $ nb_chaise = 0
+    $ nb_fusil = 0
+    $ nb_hache = 0
+    $ nb_kit_med = 0
+    $ nb_lampe = 0
+    $ nb_lit = 0
+    $ nb_radio = 0
+    $ nb_sac = 0
+    $ nb_table = 0
+    $ nb_violon = 0
     $ nb_child = 0
     $ is_down = 0
 
     $ max_food = 10
     $ max_drink = 10
+    $ max_balles = 2
+    $ max_bible = 1
+    $ max_cadena = 1
+    $ max_cagoule = 1
+    $ max_cartes = 1
+    $ max_chaise = 4
+    $ max_fusil = 1
+    $ max_hache = 1
+    $ max_kit_med = 2
+    $ max_lampe = 1
+    $ max_lit = 4
+    $ max_radio = 1
+    $ max_sac = 2
+    $ max_table = 1
+    $ max_violon = 1
+    $ max_child = 4
+    $ is_down = 0
 
     $ soup_1 = 0
     $ soup_2 = 0
     $ soup_3 = 0
     $ soup_4 = 0
+    $ soup_5 = 0
+    $ soup_6 = 0
+    $ soup_7 = 0
+    $ soup_8 = 0
+    $ soup_9 = 0
+    $ soup_10 = 0
+
+    $ water_1 = 0
+    $ water_2 = 0
+    $ water_3 = 0
+    $ water_4 = 0
+    $ water_5 = 0
+    $ water_6 = 0
+    $ water_7 = 0
+    $ water_8 = 0
+    $ water_9 = 0
+    $ water_10 = 0
+
+    $ balles_1 = 0
+    $ balles_2 = 0
+
+    $ bible_1 = 0
+
+    $ cadena_1 = 0
+
+    $ cagoule_1 = 0
+
+    $ cartes_1 = 0
+
+    $ chaise_1 = 0
+    $ chaise_1 = 0
+    $ chaise_1 = 0
+    $ chaise_1 = 0
+
+    $ fusil_1 = 0
+
+    $ hache_1 = 0
+
+    $ kit_med_1 = 0
+    $ kit_med_1 = 0
+
+    $ lampe_1 = 0
+
+    $ lit_1 = 0
+    $ lit_1 = 0
+    $ lit_1 = 0
+    $ lit_1 = 0
+
+    $ radio_1 = 0
+
+    $ sac_1 = 0
+    $ sac_1 = 0
+
+    $ table_1 = 0
+
+    $ violon_1 = 0
+
+    $ child_1 = 0
+    $ child_1 = 0
+    $ child_1 = 0
+    $ child_1 = 0
 
 
 label xavier_caught_you:
@@ -79,6 +172,134 @@ label add_soup:
         "Vous avez trop de nourriture sur vous !"
     jump continue
 
+label add_balles:
+    if nb_balles < max_balles:
+        $ nb_balles += 1
+        "Vous avez trouvé une balle !"
+    else:
+        "Vous avez trop de balles sur vous !"
+    jump continue
+
+label add_bible:
+    if nb_bible < max_bible:
+        $ nb_bible += 1
+        "Vous avez trouvé une bible !"
+    else:
+        "Vous avez trop de bible sur vous !"
+    jump continue
+
+label add_cadena:
+    if nb_cadena < max_cadena:
+        $ nb_cadena += 1
+        "Vous avez trouvé un cadena !"
+    else:
+        "Vous avez trop de cadena sur vous !"
+    jump continue
+
+label add_cagoule:
+    if nb_cagoule < max_cagoule:
+        $ nb_cagoule += 1
+        "Vous avez trouvé une cagoule !"
+    else:
+        "Vous avez trop de cagoule sur vous !"
+    jump continue
+
+label add_cartes:
+    if nb_cartes < max_cartes:
+        $ nb_cartes += 1
+        "Vous avez trouvé un jeu de cartes !"
+    else:
+        "Vous avez trop de cartes sur vous !"
+    jump continue
+
+label add_chaise:
+    if nb_chaise < max_chaise:
+        $ nb_chaise += 1
+        "Vous avez trouvé une chaise !"
+    else:
+        "Vous avez trop de chaise sur vous !"
+    jump continue
+
+label add_water:
+    if nb_water < max_water:
+        $ nb_water += 1
+        "Vous avez trouvé de l'eau !"
+    else:
+        "Vous avez trop d'eau sur vous !"
+    jump continue
+
+label add_fusil:
+    if nb_fusil < max_fusil:
+        $ nb_fusil += 1
+        "Vous avez trouvé un fusil !"
+    else:
+        "Vous avez trop de fusil sur vous !"
+    jump continue
+
+label add_hache:
+    if nb_hache < max_hache:
+        $ nb_hache += 1
+        "Vous avez trouvé une hache !"
+    else:
+        "Vous avez trop de hache sur vous !"
+    jump continue
+
+label add_kit_med:
+    if nb_kit_med < max_kit_med:
+        $ nb_kit_med += 1
+        "Vous avez trouvé un kit_med !"
+    else:
+        "Vous avez trop de kit_med sur vous !"
+    jump continue
+
+label add_lampe:
+    if nb_lampe < max_lampe:
+        $ nb_lampe += 1
+        "Vous avez trouvé une lampe !"
+    else:
+        "Vous avez trop de lampe sur vous !"
+    jump continue
+
+label add_lit:
+    if nb_lit < max_lit:
+        $ nb_lit += 1
+        "Vous avez trouvé un lit !"
+    else:
+        "Vous avez trop de lit sur vous !"
+    jump continue
+
+label add_radio:
+    if nb_radio < max_radio:
+        $ nb_radio += 1
+        "Vous avez trouvé une radio !"
+    else:
+        "Vous avez trop de radio sur vous !"
+    jump continue
+
+label add_sac:
+    if nb_sac < max_sac:
+        $ nb_sac += 1
+        "Vous avez trouvé un sac !"
+    else:
+        "Vous avez trop de sac sur vous !"
+    jump continue
+
+label add_table:
+    if nb_table < max_table:
+        $ nb_table += 1
+        "Vous avez trouvé une table !"
+    else:
+        "Vous avez trop de table sur vous !"
+    jump continue
+
+label add_violon:
+    if nb_violon < max_violon:
+        $ nb_violon += 1
+        "Vous avez trouvé un violon !"
+    else:
+        "Vous avez trop de violon sur vous !"
+    jump continue
+
 # The game starts here.
 
 label hall:
@@ -88,11 +309,11 @@ label hall:
     show screen items_hall
     screen items_hall:
         imagebutton:
-            xpos 0
-            ypos 0
-            idle "empty.png"
+            xpos 950
+            ypos 450
+            idle "items/balles.png"
             at custom_zoom
-            action [Jump("add_soup")]
+            action [Jump("add_balles")]
     screen arrow_hall:
         imagebutton:
             xpos 1130
