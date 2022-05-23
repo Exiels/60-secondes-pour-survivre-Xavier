@@ -22,7 +22,7 @@ image cuisine = im.Scale("house/cuisine.jpg", 1920, 1080)
 
 image Benoit = "familly/Benoit.png"
 image Anne = "familly/Anne.png"
-image Thomas = "familly/Thomas.png"
+image Thomas = im.Scale("familly/Thomas.png", 310, 493)
 image Arthur = "familly/Arthur.png"
 image Xavier = im.Scale("familly/Xavier.png", 800, 1000)
 
@@ -774,7 +774,17 @@ label choose_day:
         jump anniversaire_arthur
     if day == 119:
         jump anniversaire_anne
-
+    if day % 20 == 0:
+        play sound "audio/sound_effect/bruit-de-porte-toc-toc.mp3"
+        "Tiens ? Ca frappe à la porte, mais différemment de quand Xavier le fait..."
+        "Les voisins" "Bonjour les enfants !"
+        "Les voisins" "Vous voulez bien faire un échange avec nous ?"
+        jump voisin
+    if day == 42:
+        jump dev
+    if day == 130:
+        jump end
+        
     jump normal_day
 
 label Xavier_toc:
@@ -879,8 +889,137 @@ label anniversaire_anne:
     if anne == True:
         play sound "audio/sound_effect/bruit-de-porte-toc-toc.mp3"
         "Tiens ? Ca frappe à la porte, mais différemment de quand Xavier le fait..."
-        "Les voisins" ""
-        
+        "Les voisins" "Bon anniversaire Anne !"
+        "Les voisins" "Nous maintenont notre offre, voulez-vous nous confier Anne contre de la nourriture pour tous et de l'eau ?"
+
+label voisin:
+    menu:
+        "Confier Anne contre les vivres" if who_exp != "Anne" and anne == True:
+            "Les voisins" "Merci de votre confiance !\nAnne sera très heureuse avec nous."
+            $ nb_child -= 1
+            $ anne = False
+            hide Anne
+            $ nb_food += nb_child
+            $ nb_eau += nb_child
+            if nb_radio != 0:
+                "On entendit bien plus tard à la radio que les voisins avaient vendu Anne à une maison close aux Pays-Bas."
+                "Elle y a été assassinée par un client."
+            jump normal_day
+        "Leur échanger la cagoule contre des vivres" if nb_cagoule != 0:
+            $ nb_cagoule -= 1
+            $ nb_food += 1
+            $ nb_eau += 1
+            jump normal_day
+        "Leur échanger le jeu de carte contre des vivres" if nb_cartes != 0:
+            $ nb_cartes -= 1
+            $ vivres = renpy.random.randint(1,2)
+            if vivres == 1:
+                $ nb_food += 1
+            else:
+                $ nb_eau += 1
+            jump normal_day
+        "Leur échanger la lampe contre une bible" if nb_lampe != 0:
+            $ nb_lampe -= 0
+            $ nb_bible += 1
+            jump normal_day
+        "Ne rien leur échanger":
+            jump normal_day
+
+label dev:
+
+    play sound "audio/sound_effect/bruit-de-porte-toc-toc.mp3"
+    "Ces coups ne semblent pas venir de ce monde..."
+    "Les Devs" "Salut les kidz !"
+    "Les Devs" "Aujourd'hui c'est le 42eme jour, donc on s'est dit que c'était le bon moment pour nous montrer."
+    "Donc on vous propose un petit pari ! Ca vous dit ?"
+    menu:
+        "Oui":
+            "Les Devs" "Trop cool ! Aller, pile ou face ?"
+            menu:
+                "Pile":
+                    $ pile_face = renpy.random.randint(1,2)
+                "Face":
+                    $ pile_face = renpy.random.randint(1,2)
+            if pile_face == 1:
+                "Les Devs" "PERDU !"
+                "Les Devs" "Aller, soit pas deg', on va te faire une fleur, on te donne un item de rang 1 de chaque !"
+                $ nb_bible += 1
+                $ nb_cadena += 1
+                $ nb_cagoule += 1
+                $ nb_cartes += 1
+                $ nb_kit_med += 1
+                $ nb_lampe += 1
+                $ nb_radio += 1
+                $ nb_violon += 1
+                jump normal_day
+            if pile_face == 2:
+                "Les Devs" "Belle victoire !"
+                "Les Devs" "Allez-y, choisissez votre récompense !"
+                menu:
+                    "10 soupes":
+                        $ nb_food += 10
+                    "10 bouteilles d'eau":
+                        $ nb_eau += 10
+                    "De l'insecticide":
+                        $ insecticide = 1
+                        menu:
+                            "Utiliser l'insecticide ?"
+                            "Oui":
+                                "Bien joué ! Tu as gagné !"
+                                "Pourquoi ?"
+                                "Et bien car c'est un insecticide anti-Xavier !"
+                                "Vous lui avez vaporisé la gueule et il en est mort de suite."
+                                "Bien joué !"
+                                return
+                            "Non":
+                                "Okay bah je le reprend."
+                                "Nan mais c'est quoi ça ? Ces gens qui refuse les cadeaux, là !"
+                                "Non mais."
+                    "Une radio":
+                        $ nb_radio += 1
+                    "Un jeu de cartes":
+                        $ nb_cartes += 1
+                    "Une cagoule":
+                        $ nb_cagoule += 1
+                "Les Devs" "Par contre ce qu'on t'as pas dit c'est qu'en échange on prend l'un d'entre vous."
+                if benoit == True:
+                    "Les Devs" "Aller Benoît, ramène tes fesses !"
+                    $ nb_child -= 1
+                    $ benoit = False
+                    hide Benoit
+                    if who_exp == "Benoit":
+                        $ who_exp = "personne"
+                        $ explore = 0
+                elif anne == True:
+                    "Les Devs" "Aller Anne, ramène tes fesses !"
+                    $ nb_child -= 1
+                    $ anne = False
+                    hide Anne
+                    if who_exp == "Anne":
+                        $ who_exp = "personne"
+                        $ explore = 0
+                elif thomas == True:
+                    "Les Devs" "Aller Thomas, ramène tes fesses !"
+                    $ nb_child -= 1
+                    $ thomas = False
+                    hide Thomas
+                    if who_exp == "Thomas":
+                        $ who_exp = "personne"
+                        $ explore = 0
+                elif arthur == True:
+                    "Les Devs" "Aller Arthur, ramène tes fesses !"
+                    $ nb_child -= 1
+                    $ arthur = False
+                    hide Arthur
+                    if who_exp == "Arthur":
+                        $ who_exp = "personne"
+                        $ explore = 0
+            jump normal_day
+
+        "Non":
+            "Les Devs" "Peuh !\nMême pas drôle !"
+            "Les Devs" "Bon bah des bisous."
+            jump normal_day
 
 label manger:
     menu:
@@ -1253,3 +1392,17 @@ label normal_day_next:
             $ nb_eau += renpy.random.randint(0,5)
             "Vous avez [nb_food] soupes et [nb_eau] bouteilles d'eau après cette expédition."
     jump choose_day
+
+label end:
+    "130 jours aujourd'hui..."
+    "Dans 15 jours c'est l'anniversaire de Thomas."
+    "Ca fait plusieurs heures qu'on n'entend plus Xavier."
+    "On risque un oeil dehors..."
+    "..."
+    "Personne."
+    "Xavier a oublié de se nourrir ces derniers jours. Il en est mort."
+    scene hall
+    with dissolve
+    "Vous avez survécu."
+    "Vous avez changé l'histoire."
+    return
